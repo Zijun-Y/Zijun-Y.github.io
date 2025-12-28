@@ -1,0 +1,32 @@
+---
+import '../styles/global.css'
+import { FractalCanvas } from "@/components/FractalCanvas";
+const { title = "Zijun Yu" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+
+  <body class="min-h-screen antialiased">
+    <FractalCanvas client:load />
+
+    <div id="app" class="relative min-h-screen">
+      <header>
+        <slot name="header" />
+      </header>
+
+      <main class="relative z-10">
+        <slot />
+      </main>
+
+      <footer>
+        <slot name="footer" />
+      </footer>
+    </div>
+  </body>
+</html>

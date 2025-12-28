@@ -1,0 +1,27 @@
+---
+import { IdentityDrawer } from "@/components/IdentityDrawer";
+---
+
+<div
+  class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4"
+>
+  <!-- Left: Identity Trigger -->
+  <IdentityDrawer client:load />
+
+
+  <!-- Right: Navigation -->
+  <nav class="hidden md:flex items-center gap-6 text-sm">
+    <a href="/" class="hover:underline">Home</a>
+    <a href="/cv" class="hover:underline">CV</a>
+    <a href="/publications" class="hover:underline">Publications</a>
+    <a href="/about" class="hover:underline">About</a>
+  </nav>
+
+  <!-- Mobile nav placeholder -->
+  <button
+    class="md:hidden rounded-md px-2 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+    aria-label="Open navigation menu"
+  >
+      <span class="text-lg">☰</span>
+  </button>
+</div>
