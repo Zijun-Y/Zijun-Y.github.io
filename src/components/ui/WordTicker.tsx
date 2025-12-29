@@ -41,7 +41,7 @@ export default function WordTicker({
                 </span>
             </span>
 
-            <ArrowRight className="h-4 w-4 text-neutral-500" />
+            <ArrowRight className="h-4 w-4 text-neutral-500 dark:text-amber-100" />
         </button>
     );
 }

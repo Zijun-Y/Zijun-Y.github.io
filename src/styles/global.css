@@ -4,12 +4,23 @@
 @theme {
     --color-background: hsl(0 0% 100%);
     --color-foreground: hsl(222.2 84% 4.9%);
+    --color-muted: hsl(210 40% 96.1%);
+    --color-muted-foreground: hsl(215.4 16.3% 46.9%);
+    --color-card: hsl(0 0% 100%);
+    --color-card-foreground: hsl(222.2 84% 4.9%);
 }
 
-/* Dark mode */
-.dark {
-    --color-background: hsl(222.2 84% 4.9%);
-    --color-foreground: hsl(210 40% 98%);
+@layer theme {
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --color-background: hsl(222.2 84% 4.9%);
+            --color-foreground: hsl(210 40% 98%);
+            --color-muted: hsl(217.2 32.6% 17.5%);
+            --color-muted-foreground: hsl(215 20.2% 65.1%);
+            --color-card: hsl(222.2 84% 4.9%);
+            --color-card-foreground: hsl(210 40% 98%);
+        }
+    }
 }
 
 body {
