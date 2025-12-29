@@ -211,7 +211,7 @@ export function FractalCanvas() {
                         if (
                             dist1 >= close &&
                             dist1 < far &&
-                            Math.random() < 0.3 &&
+                            Math.random() < 0.6 &&
                             closest1
                         ) {
                             newEdges.push([closest1.id, nextId]);
@@ -274,7 +274,7 @@ export function FractalCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Draw edges (green-blue, thinner, more opacity)
-        ctx.strokeStyle = "rgba(0, 200, 200, 0.2)";
+        ctx.strokeStyle = "rgba(0, 200, 200, 0.3)";
         ctx.lineWidth = 0.5;
         for (const [fromId, toId] of graph.edges) {
             const from = graph.nodes.find((n) => n.id === fromId);
@@ -305,12 +305,12 @@ export function FractalCanvas() {
         // Root node (violet, larger)
         const root = graph.nodes[0];
         if (root) {
-            ctx.fillStyle = "rgba(238, 130, 238, 0.7)";
+            ctx.fillStyle = "rgba(238, 130, 238, 0.5)";
             ctx.beginPath();
             ctx.arc(
                 root.x * canvas.width,
                 root.y * canvas.height,
-                5,
+                10,
                 0,
                 Math.PI * 2,
             );

@@ -1,27 +1,57 @@
 ---
-import { IdentityDrawer } from "@/components/IdentityDrawer";
+import IdentityTrigger from "@/components/ui/IdentityTrigger";
+import MobileNav from "@/components/ui/MobileNav";
 ---
 
-<div
-  class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4"
->
-  <!-- Left: Identity Trigger -->
-  <IdentityDrawer client:load />
+<header class="fixed inset-x-0 top-4 z-50 pointer-events-none">
+    <div class="mx-auto px-4">
+        <div
+            class="pointer-events-auto
+                flex items-center justify-between
+                rounded-2xl
+                bg-[#f8f5ee]/50 dark:bg-neutral-900/60
+                backdrop-blur-lg
+                shadow-lg
+                ring-1 ring-black/5 dark:ring-white/10
+                px-6 py-3 h-14"
+        >
+            <!-- Left: identity -->
+            <div class="flex-1 flex justify-start">
+                <IdentityTrigger client:load />
+            </div>
 
+            <!-- Center nav (desktop, academic, text-only) -->
+            <nav
+                class="hidden md:flex items-center gap-8 text-base font-medium"
+            >
+                <a href="/">Home</a>
+                <a href="/cv">CV</a>
+                <a href="/publications">Publications</a>
+                <a href="/about">About</a>
+            </nav>
 
-  <!-- Right: Navigation -->
-  <nav class="hidden md:flex items-center gap-6 text-sm">
-    <a href="/" class="hover:underline">Home</a>
-    <a href="/cv" class="hover:underline">CV</a>
-    <a href="/publications" class="hover:underline">Publications</a>
-    <a href="/about" class="hover:underline">About</a>
-  </nav>
-
-  <!-- Mobile nav placeholder -->
-  <button
-    class="md:hidden rounded-md px-2 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-    aria-label="Open navigation menu"
-  >
-      <span class="text-lg">☰</span>
-  </button>
-</div>
+            <!-- Right: mobile -->
+            <div class="flex-1 flex justify-end md:hidden">
+                <MobileNav client:load />
+            </div>
+        </div>
+    </div>
+    <div aria-label="SEO External links" class="hidden">
+        <a href="https://github.com/Zijun-Y" target="_blank" rel="me noopener">
+            GitHub
+        </a>
+        <a
+            href="https://www.linkedin.com/in/yuzijun"
+            target="_blank"
+            rel="me noopener"
+        >
+            LinkedIn
+        </a>
+        <!-- <a href="https://scholar.google.com/citations?user=XXXX" target="_blank" rel="me noopener">
+            Google Scholar
+          </a>
+          <a href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="me noopener">
+            ORCID
+          </a> -->
+    </div>
+</header>

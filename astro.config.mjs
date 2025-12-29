@@ -17,4 +17,6 @@ export default defineConfig({
     },
 
     integrations: [react()],
+    site: "https://zijunyu.com",
+    output: "static",
 });

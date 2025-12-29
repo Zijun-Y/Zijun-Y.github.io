@@ -1,9 +1,10 @@
 ---
+import ToolTicker from "./ui/ToolTicker";
 ---
 
-<div class="mx-auto max-w-6xl px-6 py-6 text-xs text-neutral-500">
-  <div class="flex justify-between">
-    <span>© {new Date().getFullYear()} Zijun</span>
-    <span>Built with ChatGPT · Astro · pnpm · Tailwind · Shadcn/ui</span>
-  </div>
+<div class="mx-auto max-w-6xl px-6 py-6 text-sm text-neutral-500">
+    <div class="flex justify-between">
+        <span>© {new Date().getFullYear()} Zijun Yu</span>
+        <ToolTicker client:load />
+    </div>
 </div>
