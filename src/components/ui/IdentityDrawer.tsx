@@ -9,6 +9,7 @@ import {
     Clipboard,
     Eye,
     ClipboardCheck,
+    File,
 } from "lucide-react";
 
 interface DrawerLinkProps {
@@ -131,6 +132,11 @@ export function IdentityDrawer() {
                     icon={Linkedin}
                     label="LinkedIn"
                     href="https://www.linkedin.com/in/yuzijun"
+                />
+                <DrawerLink
+                    icon={File}
+                    label="OpenReview"
+                    href="https://openreview.net/profile?id=~Zijun_Yu2"
                 />
             </div>
 
