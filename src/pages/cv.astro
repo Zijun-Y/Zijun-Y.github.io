@@ -1,18 +1,16 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SiteHeader from '@/components/SiteHeader.svelte';
 ---
 
-<BaseLayout title="CV · Zijun">
-  <Header slot="header" />
-
-  <section class="mx-auto max-w-6xl px-6 py-24">
-    <h1 class="text-3xl font-semibold">CV</h1>
-    <p class="mt-4 text-neutral-600 dark:text-neutral-400">
+<BaseLayout title="CV · Zijun Yu">
+  <SiteHeader client:load />
+  <main class="zh-main zh-shell" style="padding-top: calc(64px + clamp(48px, 9vh, 96px));">
+    <h1 style="font-family: var(--display); font-size: clamp(36px, 5vw, 64px); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); margin: 0;">
+      Curriculum Vitae
+    </h1>
+    <p style="margin-top: 24px; color: var(--muted); font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em;">
       Content coming soon.
     </p>
-  </section>
-
-  <Footer slot="footer" />
+  </main>
 </BaseLayout>

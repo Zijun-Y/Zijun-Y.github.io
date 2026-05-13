@@ -1,37 +1,74 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
-import { sections } from "@/content/sections";
-import ResearchSection from "@/components/ResearchSection.astro";
+import SiteHeader from "@/components/SiteHeader.svelte";
+import PublicationsSection from "@/components/PublicationsSection.svelte";
+import { publications } from "@/content/publications";
 ---
 
-<BaseLayout title="Zijun">
-    <Header slot="header" />
+<BaseLayout title="Zijun Yu — PhD, McGill">
+    <SiteHeader client:load />
 
-    <section class="mx-auto max-w-6xl px-6 py-24">
-        <h1
-            class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight"
-        >
-            Zijun Yu
-        </h1>
+    <main class="zh-main" id="top">
+        <!-- ── Hero ─────────────────────────────────────────────── -->
+        <section class="zh-hero zh-shell">
+            <div class="zh-hero__meta">
+                <span class="zh-meta-loc">
+                    <span class="zh-meta-loc-dash"></span>
+                    Montréal, QC
+                </span>
+            </div>
 
-        <p
-            class="mt-8 max-w-2xl text-lg md:text-xl leading-relaxed text-neutral-700 dark:text-neutral-300"
-        >
-            I am a PhD student in Mathematics and Statistics at McGill
-            University, specializing in deep learning, conformal prediction, and
-            survival analysis, with a strong foundation in statistics and
-            computer science from my first-class honours bachelor's degree. As a
-            former software developer with four years of industry experience, I
-            excel in designing and building robust, efficient systems. I thrive
-            in collaborative environments and applying technical skills to
-            address interdisciplinary challenges in machine learning and
-            statistical modeling.
-        </p>
-    </section>
+            <h1 class="zh-hero__name">
+                <span class="zh-hero__line">Zijun</span>
+                <span class="zh-hero__line zh-hero__line--italic">Yu</span>
+            </h1>
 
-    {sections.map((section) => <ResearchSection section={section} />)}
+            <p class="zh-hero__bio">
+                I'm a PhD student in Mathematics &amp; Statistics at <em
+                    >McGill University</em
+                >, working at the intersection of statistical theory and modern
+                machine learning. Before academia, four years building
+                production software taught me to keep things robust and elegant.
+            </p>
 
-    <Footer slot="footer" />
+            <ul class="zh-tags" aria-label="Research interests">
+                <li class="zh-tag"><span>Conformal Prediction</span></li>
+                <li class="zh-tag"><span>Machine Learning</span></li>
+                <li class="zh-tag"><span>Survival Analysis</span></li>
+            </ul>
+
+            <a
+                href="#publications"
+                class="zh-scroll-cue"
+                aria-label="Scroll to publications"
+            >
+                <span class="zh-scroll-cue__label">Selected publications</span>
+                <span class="zh-scroll-cue__line"></span>
+            </a>
+        </section>
+
+        <!-- ── Publications ──────────────────────────────────────── -->
+        <PublicationsSection {publications} client:load />
+    </main>
+
+    <!-- ── Footer ────────────────────────────────────────────── -->
+    <footer class="zh-footer zh-shell zh-footer__bottom">
+        <span>© 2026 Zijun Yu</span>
+        <span>— last updated <time>May 2026</time></span>
+    </footer>
 </BaseLayout>
+
+<script>
+    // Smooth-scroll in-page anchors (offset for fixed header)
+    document.addEventListener("click", (e) => {
+        const a = (e.target as Element).closest('a[href^="#"]');
+        if (!a) return;
+        const id = a.getAttribute("href")!.slice(1);
+        if (!id) return;
+        const el = document.getElementById(id);
+        if (!el) return;
+        e.preventDefault();
+        const top = el.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top, behavior: "smooth" });
+    });
+</script>

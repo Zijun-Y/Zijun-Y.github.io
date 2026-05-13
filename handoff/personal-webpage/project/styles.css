@@ -1,50 +1,32 @@
-@import "tailwindcss";
+/* styles.css — Zijun Yu personal site
+   Editorial "ink on paper". CSS vars set by app.jsx from the active palette. */
 
-/* ============================================================
-   DESIGN TOKENS — "Ink on Paper" editorial
-   Light mode defaults; dark mode via prefers-color-scheme.
-   ============================================================ */
-:root {
-  --bg:          #EDEEEA;
-  --ink:         #15171A;
-  --accent:      #3B6FB0;
-  --bg-rgb:      237, 238, 234;
-  --ink-rgb:     21, 23, 26;
-  --accent-rgb:  59, 111, 176;
-  --muted:       #707378;
-  --rule:        rgba(21, 23, 26, 0.14);
-  --paper:       #EDEEEA;
-
-  --display:          "Newsreader", Georgia, serif;
-  --body:             "Geist", ui-sans-serif, system-ui, sans-serif;
-  --mono:             "Geist Mono", ui-monospace, monospace;
-  --display-weight:   400;
-  --display-tracking: -0.02em;
-
-  --space-unit:  8px;
-  --hero-size:   clamp(64px, 13vw, 168px);
-  --shell-pad:   clamp(20px, 4vw, 56px);
-  --shell-max:   1280px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Dark-ink noir palette */
-    --bg:          #15110E;
-    --ink:         #F2EADC;
-    --accent:      #C9A270;
-    --bg-rgb:      21, 17, 14;
-    --ink-rgb:     242, 234, 220;
-    --accent-rgb:  201, 162, 112;
-    --muted:       #8F887F;
-    --rule:        rgba(242, 234, 220, 0.12);
-    --paper:       #1A1511;
-  }
-}
-
-*, *::before, *::after { box-sizing: border-box; }
+* { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+
+:root {
+  /* Defaults — overridden at runtime by app.jsx */
+  --bg: #EDEEEA;
+  --ink: #15171A;
+  --accent: #3B6FB0;
+  --bg-rgb: 237, 238, 234;
+  --ink-rgb: 21, 23, 26;
+  --accent-rgb: 59, 111, 176;
+  --muted: #707378;
+  --rule: rgba(21, 23, 26, 0.14);
+  --paper: #EDEEEA;
+  --display: "Newsreader", Georgia, serif;
+  --body: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --display-weight: 400;
+  --display-tracking: -0.02em;
+  --space-unit: 8px;
+  --hero-size: clamp(64px, 13vw, 168px);
+
+  --shell-pad: clamp(20px, 4vw, 56px);
+  --shell-max: 1280px;
+}
 
 body {
   background: var(--bg);
@@ -70,9 +52,10 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: 0;
+  opacity: 1;
 }
 
-/* Paper-grain texture (opt-in via .zh-grain-on on <html>) */
+/* Paper grain texture — toggled on <html> */
 body::before {
   content: "";
   position: fixed;
@@ -90,7 +73,7 @@ body::before {
 }
 html.zh-grain-on body::before { opacity: 0.5; }
 
-/* Soft radial vignette */
+/* Soft vignette */
 body::after {
   content: "";
   position: fixed;
@@ -121,7 +104,8 @@ body::after {
   display: inline-block;
 }
 
-/* ── HEADER ──────────────────────────────────────────────── */
+/* ── HEADER ───────────────────────────────────────────────────────────── */
+/* Always floats — pinned, always above content (incl. year rail). */
 .zh-header {
   position: fixed;
   top: 0;
@@ -149,8 +133,8 @@ body::after {
 
 .zh-getintouch {
   appearance: none;
-  border: 0.5px solid var(--rule);
-  background: rgba(var(--bg-rgb), 0.5);
+  border: 0;
+  background: transparent;
   color: var(--ink);
   font-family: var(--body);
   font-size: 13px;
@@ -160,11 +144,13 @@ body::after {
   align-items: center;
   gap: 10px;
   padding: 7px 14px 7px 12px;
+  border: 0.5px solid var(--rule);
   border-radius: 999px;
+  background: rgba(var(--bg-rgb), 0.5);
   cursor: pointer;
   justify-self: start;
   transition: background-color .2s ease, color .2s ease,
-              border-color .2s ease;
+              border-color .2s ease, transform .15s ease;
 }
 .zh-getintouch:hover {
   background: var(--ink);
@@ -185,7 +171,7 @@ body::after {
 }
 @keyframes zh-pulse {
   0%, 100% { box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.18); }
-  50%       { box-shadow: 0 0 0 5px rgba(var(--accent-rgb), 0); }
+  50%      { box-shadow: 0 0 0 5px rgba(var(--accent-rgb), 0); }
 }
 
 .zh-mark {
@@ -196,6 +182,7 @@ body::after {
   color: inherit;
   justify-self: center;
   white-space: nowrap;
+  min-width: 0;
 }
 .zh-mark__name {
   font-family: var(--display);
@@ -240,7 +227,7 @@ body::after {
 .zh-nav__a:hover { color: var(--ink); }
 .zh-nav__a:hover::after { transform: scaleX(1); }
 
-/* ── CONTACT PANEL ────────────────────────────────────────── */
+/* ── CONTACT PANEL (slides in from the right) ─────────────────────────── */
 .zh-cscrim {
   position: fixed;
   inset: 0;
@@ -315,7 +302,11 @@ body::after {
   border: 0.5px solid var(--rule);
   position: relative;
 }
-.zh-cpanel__photo-svg { width: 100%; height: 100%; display: block; }
+.zh-cpanel__photo-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 
 .zh-cpanel__body {
   display: flex;
@@ -358,7 +349,7 @@ body::after {
   padding: 14px 0;
   text-decoration: none;
   color: var(--ink);
-  transition: color .15s ease, padding-left .2s ease;
+  transition: color .15s ease, padding .2s ease;
 }
 .zh-cpanel__links a:hover {
   color: var(--accent);
@@ -393,8 +384,8 @@ body::after {
   font-family: var(--display);
 }
 
-/* ── HERO ──────────────────────────────────────────────────── */
-.zh-main { padding-top: 64px; }
+/* ── HERO ─────────────────────────────────────────────────────────────── */
+.zh-main { padding-top: 64px; /* clear fixed header */ }
 
 .zh-hero {
   padding-top: clamp(48px, 9vh, 96px);
@@ -426,7 +417,9 @@ body::after {
   height: 1px;
   background: currentColor;
 }
-.zh-meta-year time { font-variant-numeric: tabular-nums; }
+.zh-meta-year time {
+  font-variant-numeric: tabular-nums;
+}
 
 .zh-hero__name {
   font-family: var(--display);
@@ -527,8 +520,12 @@ body::after {
   100% { transform: translateX(64px); }
 }
 
-/* ── YEAR RAIL ─────────────────────────────────────────────── */
-.zh-pubs-wrap { position: relative; }
+/* ── YEAR RAIL ────────────────────────────────────────────────────────── */
+/* Desktop: fixed on the left edge, vertical.
+   Mobile (≤900px): sticky top horizontal strip, sits below header. */
+.zh-pubs-wrap {
+  position: relative;
+}
 
 .zh-yearrail {
   position: fixed;
@@ -549,6 +546,12 @@ body::after {
   opacity: 0;
   transition: opacity .35s ease;
 }
+/* Reveal only when we're inside the publications section.
+   The publications section toggles a class via JS, but we can also rely
+   on a CSS-only approach: show the rail once the user has scrolled past
+   the hero (i.e. anything below ~80vh). Use the section's own scroll
+   context via a more robust JS toggle is overkill for a sketch; we
+   simply reveal whenever any publication is in view. */
 .zh-yearrail.is-visible { opacity: 1; pointer-events: auto; }
 
 .zh-yearrail__label {
@@ -590,7 +593,11 @@ body::after {
   letter-spacing: 0.12em;
 }
 
-/* ── PUBLICATIONS ─────────────────────────────────────────── */
+/* Rail is hidden by default; the .is-visible class (driven by JS scroll
+   tracking in <Publications>) reveals it only while that section overlaps
+   the viewport, so it never sits over the hero. */
+
+/* ── PUBLICATIONS ─────────────────────────────────────────────────────── */
 .zh-pubs {
   padding-top: clamp(48px, 8vh, 96px);
   padding-bottom: clamp(64px, 10vh, 120px);
@@ -781,7 +788,7 @@ body::after {
   color: var(--muted);
 }
 
-/* ── FOOTER ───────────────────────────────────────────────── */
+/* ── FOOTER ────────────────────────────────────────────────────────────── */
 .zh-footer {
   padding-top: clamp(48px, 8vh, 96px);
   padding-bottom: clamp(32px, 5vh, 48px);
@@ -853,23 +860,25 @@ body::after {
   color: var(--muted);
 }
 
-/* ── DARK MODE TWEAKS ─────────────────────────────────────── */
-@media (prefers-color-scheme: dark) {
-  .zh-tag,
-  .zh-getintouch {
-    background: rgba(var(--ink-rgb), 0.08);
-  }
-  .zh-pub:hover {
-    background: linear-gradient(to right,
-      rgba(var(--bg-rgb), 0.06), transparent 60%);
-  }
-  .zh-cpanel__close { background: rgba(var(--ink-rgb), 0.08); }
+/* ── DARK PALETTE TWEAKS ───────────────────────────────────────────────── */
+.zh-dark .zh-tag,
+.zh-dark .zh-getintouch {
+  background: rgba(var(--ink-rgb), 0.4);
 }
+.zh-dark .zh-pub:hover {
+  background: linear-gradient(to right,
+    rgba(var(--bg-rgb), 0.04), transparent 60%);
+}
+.zh-dark .zh-cpanel__close { background: rgba(var(--ink-rgb), 0.4); }
 
-/* ── RESPONSIVE ───────────────────────────────────────────── */
+/* ── RESPONSIVE ───────────────────────────────────────────────────────── */
 @media (max-width: 1080px) {
+  /* Year rail still vertical, just tighter to edge */
   .zh-yearrail { left: 10px; }
   .zh-yearrail__y { font-size: 15px; }
+
+  /* Header tightens at narrower widths so the centered wordmark doesn't
+     wrap onto two lines between the Get-in-touch pill and right nav. */
   .zh-mark__role { display: none; }
   .zh-nav { gap: 18px; }
 }
@@ -883,6 +892,7 @@ body::after {
   .zh-mark__role { display: none; }
   .zh-nav { display: none; }
 
+  /* Year rail flips to a horizontal sticky strip below the fixed header. */
   .zh-yearrail {
     position: sticky;
     top: 56px;
@@ -906,8 +916,12 @@ body::after {
     transform: none;
     border: 0;
     padding: 0;
+    color: var(--muted);
   }
-  .zh-yearrail__years { flex-direction: row; gap: 14px; }
+  .zh-yearrail__years {
+    flex-direction: row;
+    gap: 14px;
+  }
   .zh-yearrail__y { font-size: 14px; }
   .zh-yearrail__count { margin-left: auto; }
 
@@ -935,9 +949,10 @@ body::after {
   .zh-cpanel__photo { aspect-ratio: 4 / 3; }
 }
 
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .zh-getintouch__dot,
-  .zh-scroll-cue__line::after { animation: none; }
+  .zh-getintouch__dot, .zh-scroll-cue__line::after { animation: none; }
   html { scroll-behavior: auto; }
-  .zh-cpanel { transition-duration: 0.01s; }
+  .zh-cpanel { transition-duration: 0s; }
+  * { transition-duration: 0s !important; }
 }

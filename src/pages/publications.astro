@@ -1,18 +1,13 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SiteHeader from '@/components/SiteHeader.svelte';
+import PublicationsSection from '@/components/PublicationsSection.svelte';
+import { publications } from '@/content/publications';
 ---
 
-<BaseLayout title="Publications · Zijun">
-  <Header slot="header" />
-
-  <section class="mx-auto max-w-6xl px-6 py-24">
-    <h1 class="text-3xl font-semibold">Publications</h1>
-    <p class="mt-4 text-neutral-600 dark:text-neutral-400">
-      Content coming soon.
-    </p>
-  </section>
-
-  <Footer slot="footer" />
+<BaseLayout title="Publications · Zijun Yu">
+  <SiteHeader client:load />
+  <main class="zh-main" id="top">
+    <PublicationsSection {publications} client:load />
+  </main>
 </BaseLayout>
