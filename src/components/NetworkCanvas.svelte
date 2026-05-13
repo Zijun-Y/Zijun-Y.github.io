@@ -1,21 +1,36 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  const MAX_NODES = 80;
-  const LINK_DIST = 180;
-  const SPAWN_MS = 90;    // ms between spawn ticks while hovering
-  const SPAWN_RADIUS = 100; // spawn spread around cursor
+  const MAX_NODES    = 80;
+  const LINK_DIST    = 200;  // max px for an edge
+  const MAX_EDGES    = 2;    // each node draws at most 2 edges (sparse tree)
+  const SPAWN_MS     = 400;  // ms between cursor spawns
+  const SPAWN_RADIUS = 120;
+
+  const FADE_IN_RATE  = 0.020;
+  const FADE_OUT_RATE = 0.012;
+
+  // Frames before singleton/leaf culling kicks in (~5s at 60fps).
+  // Long grace period lets nodes fade in, drift, and find neighbours before
+  // being judged as isolated — without this, all nodes die on frame 1 since
+  // newly-created nodes start at alpha=0 and appear unconnected.
+  const CULL_GRACE   = 300;
+
+  const AGE_SEED   = 2200;
+  const AGE_CURSOR = 1400;
 
   interface Node {
     x: number; y: number;
     vx: number; vy: number;
     r: number;
-    alpha: number; // 0→1 fade-in
+    alpha: number;
+    age: number;
+    maxAge: number;
+    dying: boolean;
   }
 
   let canvas: HTMLCanvasElement;
 
-  // All perf-critical state lives outside Svelte reactivity
   const S = {
     nodes: [] as Node[],
     mx: -9999, my: -9999, hovering: false,
@@ -46,73 +61,84 @@
     canvas.getContext('2d')!.setTransform(S.dpr, 0, 0, S.dpr, 0, 0);
   }
 
+  function makeNode(x: number, y: number, vx: number, vy: number, seeded: boolean): Node {
+    const maxAge = (seeded ? AGE_SEED : AGE_CURSOR) + Math.random() * 300;
+    return { x, y, vx, vy, r: 1.4 + Math.random() * 0.8, alpha: 0, age: 0, maxAge, dying: false };
+  }
+
   function seedNodes(count: number) {
     for (let i = 0; i < count && S.nodes.length < MAX_NODES; i++) {
       const x = 40 + Math.random() * (S.w - 80);
       const y = 40 + Math.random() * (S.h - 80);
       const angle = Math.random() * Math.PI * 2;
-      const speed = 0.05 + Math.random() * 0.10;
-      S.nodes.push({
-        x, y,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        r: 1.4 + Math.random() * 0.8,
-        alpha: 0,
-      });
+      const speed = 0.025 + Math.random() * 0.05;
+      S.nodes.push(makeNode(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed, true));
     }
   }
 
   function trySpawn(ts: number) {
     if (!S.hovering || S.reduced || S.nodes.length >= MAX_NODES) return;
     if (ts - S.lastSpawn < SPAWN_MS) return;
-    const count = Math.random() < 0.3 ? 2 : 1;
+
+    const count = Math.random() < 0.25 ? 2 : 1;
     for (let i = 0; i < count && S.nodes.length < MAX_NODES; i++) {
       const angle = Math.random() * Math.PI * 2;
       const dist  = 20 + Math.random() * SPAWN_RADIUS;
       const x = S.mx + Math.cos(angle) * dist;
       const y = S.my + Math.sin(angle) * dist;
       if (x < -20 || x > S.w + 20 || y < -20 || y > S.h + 20) continue;
-      const speed = 0.08 + Math.random() * 0.16;
-      // Velocity biased outward from cursor so nodes drift away naturally
-      S.nodes.push({
+      const speed = 0.05 + Math.random() * 0.10;
+      S.nodes.push(makeNode(
         x, y,
-        vx: Math.cos(angle) * speed * (0.4 + Math.random() * 0.9),
-        vy: Math.sin(angle) * speed * (0.4 + Math.random() * 0.9),
-        r: 1.4 + Math.random() * 0.8,
-        alpha: 0,
-      });
+        Math.cos(angle) * speed * (0.4 + Math.random() * 0.8),
+        Math.sin(angle) * speed * (0.4 + Math.random() * 0.8),
+        false,
+      ));
     }
     S.lastSpawn = ts;
   }
 
-  function frame(ts: number) {
-    const ctx = canvas.getContext('2d')!;
-    ctx.clearRect(0, 0, S.w, S.h);
-    if (S.nodes.length === 0) { S.raf = requestAnimationFrame(frame); return; }
-
-    trySpawn(ts);
-
-    // Drift & wrap
-    for (const n of S.nodes) {
-      if (!S.reduced) { n.x += n.vx; n.y += n.vy; }
-      if (n.x < -20)     n.x = S.w + 20;
-      if (n.x > S.w + 20) n.x = -20;
-      if (n.y < -20)     n.y = S.h + 20;
-      if (n.y > S.h + 20) n.y = -20;
-      n.alpha = Math.min(1, n.alpha + 0.022);
-    }
-
-    // Edges
+  // Draws sparse nearest-neighbour edges (tree-style, at most MAX_EDGES per node).
+  // Computes degree for ALL nodes regardless of alpha so newly-fading nodes are
+  // counted as neighbours and aren't incorrectly treated as singletons.
+  function drawEdgesAndDegree(ctx: CanvasRenderingContext2D, nodes: Node[]): Int32Array {
     const linkSq = LINK_DIST * LINK_DIST;
-    for (let i = 0; i < S.nodes.length; i++) {
-      const a = S.nodes[i];
-      for (let j = i + 1; j < S.nodes.length; j++) {
-        const b = S.nodes[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
+    const degree = new Int32Array(nodes.length);
+    const drawn  = new Set<number>();
+
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+
+      // Collect neighbours (all nodes, even fading-in ones)
+      const nbrs: { j: number; d2: number }[] = [];
+      for (let j = 0; j < nodes.length; j++) {
+        if (i === j) continue;
+        const dx = a.x - nodes[j].x, dy = a.y - nodes[j].y;
         const d2 = dx * dx + dy * dy;
-        if (d2 > linkSq) continue;
-        const t = 1 - Math.sqrt(d2) / LINK_DIST;
-        const ea = 0.22 * t * t * Math.min(a.alpha, b.alpha);
+        if (d2 < linkSq) nbrs.push({ j, d2 });
+      }
+      nbrs.sort((p, q) => p.d2 - q.d2);
+
+      let drawn_count = 0;
+      for (const { j, d2 } of nbrs) {
+        if (drawn_count >= MAX_EDGES) break;
+        const key = i < j ? i * MAX_NODES + j : j * MAX_NODES + i;
+        if (drawn.has(key)) { drawn_count++; continue; }
+        drawn.add(key);
+        drawn_count++;
+
+        // Degree counted for both endpoints regardless of visibility
+        degree[i]++;
+        degree[j]++;
+
+        // Only actually draw the line when both nodes are visible enough
+        const b = nodes[j];
+        const visA = a.alpha, visB = b.alpha;
+        if (visA < 0.01 && visB < 0.01) continue;
+
+        const t  = 1 - Math.sqrt(d2) / LINK_DIST;
+        const ea = 0.26 * t * t * Math.min(visA, visB);
+        if (ea < 0.005) continue;
         ctx.strokeStyle = `rgba(${S.color}, ${ea})`;
         ctx.lineWidth = 0.6;
         ctx.beginPath();
@@ -121,11 +147,58 @@
       }
     }
 
-    // Nodes
+    return degree;
+  }
+
+  function frame(ts: number) {
+    const ctx = canvas.getContext('2d')!;
+    ctx.clearRect(0, 0, S.w, S.h);
+
+    trySpawn(ts);
+
+    // Drift, wrap, age
+    for (const n of S.nodes) {
+      if (!S.reduced) { n.x += n.vx; n.y += n.vy; }
+      if (n.x < -20)      n.x = S.w + 20;
+      if (n.x > S.w + 20) n.x = -20;
+      if (n.y < -20)      n.y = S.h + 20;
+      if (n.y > S.h + 20) n.y = -20;
+      n.age++;
+      if (!n.dying && n.age >= n.maxAge) n.dying = true;
+    }
+
+    if (S.nodes.length === 0) { S.raf = requestAnimationFrame(frame); return; }
+
+    const degree = drawEdgesAndDegree(ctx, S.nodes);
+
+    // Cull singletons and leaves — but only after CULL_GRACE frames so nodes
+    // have time to fade in and drift near neighbours before being judged.
     for (let i = 0; i < S.nodes.length; i++) {
       const n = S.nodes[i];
+      if (!n.dying && n.age > CULL_GRACE && degree[i] <= 1) {
+        n.dying = true;
+      }
+    }
+
+    // Fade in / out, garbage-collect
+    const alive: Node[] = [];
+    for (const n of S.nodes) {
+      if (n.dying) {
+        n.alpha -= FADE_OUT_RATE;
+        if (n.alpha <= 0) continue;
+      } else {
+        n.alpha = Math.min(1, n.alpha + FADE_IN_RATE);
+      }
+      alive.push(n);
+    }
+    S.nodes = alive;
+
+    // Draw nodes
+    for (let i = 0; i < S.nodes.length; i++) {
+      const n = S.nodes[i];
+      if (n.alpha < 0.01) continue;
       const isAccent = i % 11 === 0;
-      const c = isAccent ? S.accent : S.color;
+      const c    = isAccent ? S.accent : S.color;
       const base = isAccent ? 0.48 : 0.55;
       ctx.fillStyle = `rgba(${c}, ${base * n.alpha})`;
       ctx.beginPath();
@@ -133,14 +206,14 @@
       ctx.fill();
     }
 
-    // Cursor-to-nearby-node highlight
+    // Cursor highlight
     if (S.hovering) {
       for (const n of S.nodes) {
         const dx = n.x - S.mx, dy = n.y - S.my;
         const d2 = dx * dx + dy * dy;
-        if (d2 > 130 * 130) continue;
-        const t = 1 - Math.sqrt(d2) / 130;
-        ctx.strokeStyle = `rgba(${S.accent}, ${0.32 * t * n.alpha})`;
+        if (d2 > 140 * 140) continue;
+        const t = 1 - Math.sqrt(d2) / 140;
+        ctx.strokeStyle = `rgba(${S.accent}, ${0.35 * t * n.alpha})`;
         ctx.lineWidth = 0.7;
         ctx.beginPath();
         ctx.moveTo(S.mx, S.my); ctx.lineTo(n.x, n.y);
@@ -152,25 +225,23 @@
   }
 
   onMount(() => {
-    // Reduced motion
     const prm = window.matchMedia('(prefers-reduced-motion: reduce)');
     S.reduced = prm.matches;
     prm.addEventListener('change', (e: MediaQueryListEvent) => { S.reduced = e.matches; });
 
-    // Colors — read from CSS vars so dark mode works automatically
     readColors();
     window.matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', readColors);
 
     resize();
     window.addEventListener('resize', resize);
-    seedNodes(30);
+    seedNodes(28);
 
     window.addEventListener('pointermove', (e) => {
       S.mx = e.clientX; S.my = e.clientY; S.hovering = true;
     });
     window.addEventListener('pointerleave', () => { S.hovering = false; });
-    window.addEventListener('blur',        () => { S.hovering = false; });
+    window.addEventListener('blur',         () => { S.hovering = false; });
 
     S.raf = requestAnimationFrame(frame);
     return () => {

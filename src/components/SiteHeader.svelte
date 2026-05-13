@@ -3,6 +3,7 @@
 
     let scrolled = $state(false);
     let mobileOpen = $state(false);
+    let headerEl: HTMLElement;
 
     function openContact() {
         window.dispatchEvent(new CustomEvent("open-contact"));
@@ -15,16 +16,26 @@
     }
 
     onMount(() => {
-        const onScroll = () => {
-            scrolled = window.scrollY > 8;
-        };
+        const onScroll = () => { scrolled = window.scrollY > 8; };
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
+
+        // Close mobile nav when clicking anywhere outside the header
+        const onDocClick = (e: MouseEvent) => {
+            if (mobileOpen && !headerEl.contains(e.target as Node)) {
+                mobileOpen = false;
+            }
+        };
+        document.addEventListener("click", onDocClick, { capture: true });
+
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+            document.removeEventListener("click", onDocClick, { capture: true });
+        };
     });
 </script>
 
-<header class="zh-header {scrolled || mobileOpen ? 'zh-header--scrolled' : ''}">
+<header class="zh-header {scrolled || mobileOpen ? 'zh-header--scrolled' : ''}" bind:this={headerEl}>
     <div class="zh-shell zh-header__inner">
         <button
             class="zh-getintouch"

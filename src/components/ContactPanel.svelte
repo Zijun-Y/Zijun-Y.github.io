@@ -10,13 +10,11 @@
     let copyTimer: ReturnType<typeof setTimeout> | null = null;
 
     function lockScroll() {
-        const barW = window.innerWidth - document.documentElement.clientWidth;
+        // scrollbar-gutter: stable on <html> keeps gutter reserved — no padding needed
         document.body.style.overflow = "hidden";
-        if (barW > 0) document.body.style.paddingRight = barW + "px";
     }
     function unlockScroll() {
         document.body.style.overflow = "";
-        document.body.style.paddingRight = "";
     }
 
     function close() {
@@ -26,12 +24,23 @@
 
     async function copyEmail() {
         try {
-            await navigator.clipboard.writeText(email);
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(email);
+            } else {
+                // Fallback for non-secure contexts (HTTP dev, older browsers)
+                const el = document.createElement("textarea");
+                el.value = email;
+                el.style.cssText = "position:absolute;left:-9999px;top:0";
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand("copy");
+                document.body.removeChild(el);
+            }
             copied = true;
             if (copyTimer) clearTimeout(copyTimer);
             copyTimer = setTimeout(() => { copied = false; }, 2000);
         } catch {
-            // fallback: select the text
+            // silently fail — mailto link still works
         }
     }
 
@@ -49,7 +58,7 @@
         return () => {
             window.removeEventListener("open-contact", openHandler);
             document.removeEventListener("keydown", keyHandler);
-            unlockScroll();
+            document.body.style.overflow = "";
             if (copyTimer) clearTimeout(copyTimer);
         };
     });
@@ -180,13 +189,45 @@
                             title="Copy email"
                         >
                             {#if copied}
-                                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                                    <path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    width="14"
+                                    height="14"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M5 13l4 4L19 7"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
                                 </svg>
                             {:else}
-                                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    width="14"
+                                    height="14"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="9"
+                                        y="9"
+                                        width="13"
+                                        height="13"
+                                        rx="2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                    />
+                                    <path
+                                        d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                    />
                                 </svg>
                             {/if}
                         </button>

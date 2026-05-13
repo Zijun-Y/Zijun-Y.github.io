@@ -3,6 +3,7 @@ import '../styles/global.css';
 import NetworkCanvas from '@/components/NetworkCanvas.svelte';
 import ContactPanel from '@/components/ContactPanel.svelte';
 const { title = 'Zijun Yu — PhD, McGill' } = Astro.props;
+
 ---
 
 <!DOCTYPE html>
@@ -15,6 +16,7 @@ const { title = 'Zijun Yu — PhD, McGill' } = Astro.props;
           content="Zijun Yu — PhD student in Mathematics & Statistics at McGill University. Conformal prediction, survival analysis, deep learning." />
 
     <!-- Fonts: Newsreader (serif display) + Geist (sans body + mono) -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet"
@@ -29,5 +31,15 @@ const { title = 'Zijun Yu — PhD, McGill' } = Astro.props;
 
     <!-- Contact panel — global, opened by 'open-contact' window event -->
     <ContactPanel client:load />
+
+    <!--
+      SEO crawl anchors — visually hidden, rendered server-side without JS.
+      ContactPanel is JS-hydrated; these ensure profile links are always in HTML for crawlers.
+    -->
+    <div class="zh-seo-links" aria-hidden="true">
+      <a href="https://github.com/Zijun-Y" rel="noopener noreferrer">GitHub: Zijun-Y</a>
+      <a href="https://www.linkedin.com/in/yuzijun" rel="noopener noreferrer">LinkedIn: yuzijun</a>
+      <a href="https://openreview.net/profile?id=~Zijun_Yu2" rel="noopener noreferrer">OpenReview: Zijun_Yu2</a>
+    </div>
   </body>
 </html>
