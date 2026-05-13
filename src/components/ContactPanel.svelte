@@ -4,6 +4,8 @@
     // McGill email, base64-encoded for basic spam deterrence
     const ES = "emlqdW4ueXVAbWFpbC5tY2dpbGwuY2E=";
     const email = atob(ES);
+    // Force text (non-emoji) rendering of ↗ on iOS via variation selector U+FE0E
+    const ARW = "↗︎";
 
     let open = $state(false);
     let copied = $state(false);
@@ -38,7 +40,9 @@
             }
             copied = true;
             if (copyTimer) clearTimeout(copyTimer);
-            copyTimer = setTimeout(() => { copied = false; }, 2000);
+            copyTimer = setTimeout(() => {
+                copied = false;
+            }, 2000);
         } catch {
             // silently fail — mailto link still works
         }
@@ -179,7 +183,9 @@
                     <li class="zh-cpanel__link-item">
                         <a href="mailto:{email}" class="zh-cpanel__link-a">
                             <span class="zh-cpanel__link-label">Email</span>
-                            <span class="zh-cpanel__link-value">{email} ↗</span>
+                            <span class="zh-cpanel__email-value"
+                                >{email} {ARW}</span
+                            >
                         </a>
                         <button
                             class="zh-cpanel__copy {copied ? 'is-copied' : ''}"
@@ -239,7 +245,9 @@
                             rel="noreferrer noopener"
                         >
                             <span class="zh-cpanel__link-label">GitHub</span>
-                            <span class="zh-cpanel__link-value">Zijun-Y ↗</span>
+                            <span class="zh-cpanel__link-value"
+                                >Zijun-Y {ARW}</span
+                            >
                         </a>
                     </li>
                     <li>
@@ -249,7 +257,9 @@
                             rel="noreferrer noopener"
                         >
                             <span class="zh-cpanel__link-label">LinkedIn</span>
-                            <span class="zh-cpanel__link-value">yuzijun ↗</span>
+                            <span class="zh-cpanel__link-value"
+                                >yuzijun {ARW}</span
+                            >
                         </a>
                     </li>
                     <li>
@@ -261,7 +271,33 @@
                             <span class="zh-cpanel__link-label">OpenReview</span
                             >
                             <span class="zh-cpanel__link-value"
-                                >Zijun_Yu2 ↗</span
+                                >Zijun_Yu2 {ARW}</span
+                            >
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="https://orcid.org/0009-0001-1989-1304"
+                            target="_blank"
+                            rel="noreferrer noopener"
+                        >
+                            <span class="zh-cpanel__link-label">ORCID</span>
+                            <span class="zh-cpanel__link-value"
+                                >0009-0001-1989-1304 {ARW}</span
+                            >
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="https://scholar.google.com/citations?user=EF_Zis4AAAAJ&hl=en"
+                            target="_blank"
+                            rel="noreferrer noopener"
+                        >
+                            <span class="zh-cpanel__link-label"
+                                >Google Scholar</span
+                            >
+                            <span class="zh-cpanel__link-value"
+                                >Zijun Yu {ARW}</span
                             >
                         </a>
                     </li>

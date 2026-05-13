@@ -19,4 +19,7 @@ export default defineConfig({
     integrations: [svelte()],
     site: "https://zijunyu.com",
     output: "static",
+    build: {
+        inlineStylesheets: 'always',
+    },
 });

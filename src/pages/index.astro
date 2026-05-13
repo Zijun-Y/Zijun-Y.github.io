@@ -49,7 +49,7 @@ const publications = allPubs.filter(p => p.featured !== false);
         </section>
 
         <!-- ── Publications ──────────────────────────────────────── -->
-        <PublicationsSection {publications} client:load />
+        <PublicationsSection {publications} client:visible />
     </main>
 
     <!-- ── Footer ────────────────────────────────────────────── -->
