@@ -32,10 +32,10 @@
     /* Dark-ink noir palette */
     --bg:          #15110E;
     --ink:         #F2EADC;
-    --accent:      #C9A270;
+    --accent:      #5A8FD4;
     --bg-rgb:      21, 17, 14;
     --ink-rgb:     242, 234, 220;
-    --accent-rgb:  201, 162, 112;
+    --accent-rgb:  90, 143, 212;
     --muted:       #8F887F;
     --rule:        rgba(242, 234, 220, 0.12);
     --paper:       #1A1511;
@@ -44,7 +44,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scrollbar-gutter: stable; }
 
 body {
   background: var(--bg);
@@ -364,6 +364,42 @@ body::after {
   color: var(--accent);
   padding-left: 6px;
 }
+
+/* Email row — link + copy button side by side */
+.zh-cpanel__link-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.zh-cpanel__link-a {
+  flex: 1;
+  min-width: 0;
+}
+.zh-cpanel__copy {
+  appearance: none;
+  border: 0.5px solid var(--rule);
+  background: transparent;
+  color: var(--muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.zh-cpanel__copy:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+.zh-cpanel__copy.is-copied {
+  background: rgba(var(--accent-rgb), 0.15);
+  color: var(--accent);
+  border-color: var(--accent);
+}
 .zh-cpanel__link-label {
   font-family: var(--mono);
   font-size: 11px;
@@ -614,6 +650,11 @@ body::after {
   text-wrap: balance;
 }
 .zh-pubs__title em { font-style: italic; color: var(--accent); }
+.zh-pubs__head--minimal {
+  padding-bottom: clamp(24px, 4vh, 40px);
+  border-bottom: 0.5px solid var(--rule);
+  margin-bottom: clamp(24px, 4vh, 40px);
+}
 .zh-pubs__sub {
   margin: 0;
   color: var(--muted);
@@ -853,6 +894,57 @@ body::after {
   color: var(--muted);
 }
 
+/* ── HAMBURGER + MOBILE NAV ───────────────────────────────── */
+.zh-hamburger {
+  display: none;
+  appearance: none;
+  border: 0.5px solid var(--rule);
+  background: rgba(var(--bg-rgb), 0.5);
+  color: var(--ink);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+  justify-self: end;
+  flex-shrink: 0;
+}
+.zh-hamburger:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.zh-mobile-nav {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height .3s cubic-bezier(.3,.8,.25,1);
+}
+.zh-mobile-nav.is-open {
+  max-height: 240px;
+}
+.zh-mobile-nav__inner {
+  display: flex;
+  flex-direction: column;
+  padding: 12px var(--shell-pad) 20px;
+  border-top: 0.5px solid var(--rule);
+  gap: 2px;
+}
+.zh-mobile-nav__a {
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 10px 0;
+  border-bottom: 0.5px solid var(--rule);
+  transition: color .15s ease, padding-left .2s ease;
+}
+.zh-mobile-nav__a:last-child { border-bottom: none; }
+.zh-mobile-nav__a:hover { color: var(--accent); padding-left: 4px; }
+
 /* ── DARK MODE TWEAKS ─────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   .zh-tag,
@@ -879,9 +971,9 @@ body::after {
     grid-template-columns: auto 1fr;
     gap: 12px;
   }
-  .zh-mark { justify-self: end; }
-  .zh-mark__role { display: none; }
+  .zh-mark { display: none; }
   .zh-nav { display: none; }
+  .zh-hamburger { display: inline-flex; }
 
   .zh-yearrail {
     position: sticky;

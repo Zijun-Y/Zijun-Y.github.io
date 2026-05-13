@@ -46,6 +46,22 @@
     canvas.getContext('2d')!.setTransform(S.dpr, 0, 0, S.dpr, 0, 0);
   }
 
+  function seedNodes(count: number) {
+    for (let i = 0; i < count && S.nodes.length < MAX_NODES; i++) {
+      const x = 40 + Math.random() * (S.w - 80);
+      const y = 40 + Math.random() * (S.h - 80);
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 0.05 + Math.random() * 0.10;
+      S.nodes.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        r: 1.4 + Math.random() * 0.8,
+        alpha: 0,
+      });
+    }
+  }
+
   function trySpawn(ts: number) {
     if (!S.hovering || S.reduced || S.nodes.length >= MAX_NODES) return;
     if (ts - S.lastSpawn < SPAWN_MS) return;
@@ -96,7 +112,7 @@
         const d2 = dx * dx + dy * dy;
         if (d2 > linkSq) continue;
         const t = 1 - Math.sqrt(d2) / LINK_DIST;
-        const ea = 0.16 * t * t * Math.min(a.alpha, b.alpha);
+        const ea = 0.22 * t * t * Math.min(a.alpha, b.alpha);
         ctx.strokeStyle = `rgba(${S.color}, ${ea})`;
         ctx.lineWidth = 0.6;
         ctx.beginPath();
@@ -110,7 +126,7 @@
       const n = S.nodes[i];
       const isAccent = i % 11 === 0;
       const c = isAccent ? S.accent : S.color;
-      const base = isAccent ? 0.36 : 0.42;
+      const base = isAccent ? 0.48 : 0.55;
       ctx.fillStyle = `rgba(${c}, ${base * n.alpha})`;
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
@@ -148,6 +164,7 @@
 
     resize();
     window.addEventListener('resize', resize);
+    seedNodes(30);
 
     window.addEventListener('pointermove', (e) => {
       S.mx = e.clientX; S.my = e.clientY; S.hovering = true;

@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import type { Publication } from "@/content/publications";
 
-    let { publications }: { publications: Publication[] } = $props();
+    let { publications, showHeading = true }: { publications: Publication[]; showHeading?: boolean } = $props();
 
     let sectionEl: HTMLElement;
     let activeYear = $state(publications[0]?.year ?? 0);
@@ -78,6 +78,7 @@
     </aside>
 
     <div class="zh-pubs zh-shell">
+        {#if showHeading}
         <header class="zh-pubs__head">
             <h2 class="zh-pubs__title">
                 Recent work in <em>conformal prediction</em>.
@@ -86,6 +87,13 @@
                 <sup>†</sup> denotes equal contribution.
             </p>
         </header>
+        {:else}
+        <div class="zh-pubs__head--minimal">
+            <p class="zh-pubs__sub">
+                <sup>†</sup> denotes equal contribution.
+            </p>
+        </div>
+        {/if}
 
         <ol class="zh-pubs__list">
             {#each publications as pub, idx}

@@ -2,7 +2,8 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SiteHeader from "@/components/SiteHeader.svelte";
 import PublicationsSection from "@/components/PublicationsSection.svelte";
-import { publications } from "@/content/publications";
+import { publications as allPubs } from "@/content/publications";
+const publications = allPubs.filter(p => p.featured !== false);
 ---
 
 <BaseLayout title="Zijun Yu — PhD, McGill">

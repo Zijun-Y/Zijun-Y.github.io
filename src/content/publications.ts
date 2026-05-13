@@ -12,6 +12,7 @@ export interface Publication {
     authors: Author[];
     tags: string[];
     status: 'accepted' | 'preprint' | 'submitted';
+    featured?: boolean; // false = publications page only, not landing
     links: {
         paper?: string;
         arxiv?: string;
@@ -51,6 +52,23 @@ export const publications: Publication[] = [
         ],
         tags: ['Conformal Prediction', 'LLM Reasoning'],
         status: 'submitted',
+        links: {},
+    },
+    {
+        year: 2026,
+        venue: 'In submission',
+        venueLong: 'Submitted — under review',
+        title: 'Severity-Controlled Prediction Sets for Medication Recommendation',
+        authors: [
+            { name: 'Yu Gu', coFirst: true },
+            { name: 'Zijun Yu', coFirst: true, self: true },
+            { name: 'Chi-Kuang Yeh' },
+            { name: 'Xinyu Wang' },
+            { name: 'Ziyang Song' },
+        ],
+        tags: ['Conformal Prediction', 'Healthcare'],
+        status: 'submitted',
+        featured: false,
         links: {},
     },
 ];
