@@ -184,7 +184,7 @@
                         <a href="mailto:{email}" class="zh-cpanel__link-a">
                             <span class="zh-cpanel__link-label">Email</span>
                             <span class="zh-cpanel__email-value"
-                                >{email} {ARW}</span
+                                >{email}</span
                             >
                         </a>
                         <button
