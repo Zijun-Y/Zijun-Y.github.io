@@ -42,7 +42,7 @@ export const publications: Publication[] = [
     {
         year: 2026,
         venue: 'In submission',
-        venueLong: 'Submitted — preprint forthcoming',
+        venueLong: 'Submitted — preprint available',
         title: 'Pause and Reflect: Conformal Aggregation for Chain-of-Thought Reasoning',
         authors: [
             { name: 'Yu Gu', coFirst: true },
@@ -52,7 +52,7 @@ export const publications: Publication[] = [
         ],
         tags: ['Conformal Prediction', 'LLM Reasoning'],
         status: 'submitted',
-        links: {},
+        links: { arxiv: 'https://arxiv.org/abs/2605.14098' },
     },
     {
         year: 2026,
