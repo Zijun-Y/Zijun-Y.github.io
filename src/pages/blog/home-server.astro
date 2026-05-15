@@ -1,0 +1,114 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SiteHeader from "@/components/SiteHeader.svelte";
+
+const post = {
+    slug: "home-server",
+    date: "2026-05-15",
+    readMin: 8,
+    category: "Tech",
+    title: "Your desktop can be more than a PC",
+    excerpt:
+        "A gaming rig sits idle most of the day. Mine now runs a media server, a VPN, and a handful of services I actually use — without touching the Windows install.",
+    tags: ["Home Server", "Linux", "Self-hosting"],
+};
+
+const dateFormatted = new Date(post.date + "T00:00:00").toLocaleDateString(
+    "en-US",
+    { month: "long", day: "numeric", year: "numeric" }
+);
+---
+
+<BaseLayout title={`${post.title} · Zijun Yu`}>
+    <SiteHeader client:load />
+
+    <main class="zh-main">
+        <article class="zh-post-wrap">
+            <div class="zh-shell zh-post">
+                <nav class="zh-post__crumbs">
+                    <a href="/blog" class="zh-post__back">
+                        <span aria-hidden="true">←</span>
+                        <span>All posts</span>
+                    </a>
+                    <span class="zh-post__breadsep">/</span>
+                    <span class="zh-post__crumb">{post.category}</span>
+                </nav>
+
+                <header class="zh-post__head">
+                    <div class="zh-post__meta">
+                        <span class="zh-post__date">
+                            <time datetime={post.date}>{dateFormatted}</time>
+                        </span>
+                        <span class="zh-post__dot" aria-hidden="true">·</span>
+                        <span class="zh-post__cat">{post.category}</span>
+                        <span class="zh-post__dot" aria-hidden="true">·</span>
+                        <span class="zh-post__read">{post.readMin} min read</span>
+                    </div>
+                    <h1 class="zh-post__title">{post.title}</h1>
+                    <p class="zh-post__lede">{post.excerpt}</p>
+                </header>
+
+                <div class="zh-post__body">
+                    <p>
+                        For a long time my desktop was two machines pretending to
+                        be one: a Windows gaming rig that ran all week doing
+                        nothing, and a Raspberry Pi tucked behind the monitor
+                        running the few services I actually cared about. The Pi
+                        was slow, its SD card failed twice, and every time I
+                        wanted to add something new I spent an hour debugging
+                        why the old thing had stopped working.
+                    </p>
+                    <p>
+                        The fix turned out to be obvious: stop treating the desktop
+                        as a single-purpose gaming machine and let it do several
+                        things at once. Modern CPUs sit at two or three percent
+                        utilization most of the day. The electricity is already
+                        running. The hardware is already there.
+                    </p>
+
+                    <h2>The setup</h2>
+                    <p>
+                        <!-- Placeholder — will add hardware specs and OS setup details here -->
+                        [Hardware and OS configuration details to be added.]
+                    </p>
+                    <p>
+                        <!-- Placeholder — dual-boot vs WSL vs VM discussion -->
+                        [Discussion of the dual-boot / WSL2 / VM approach to be added.]
+                    </p>
+
+                    <h2>What actually runs on it</h2>
+                    <p>
+                        <!-- Placeholder — services: Jellyfin, Tailscale, Nextcloud, etc. -->
+                        [Service stack walkthrough to be added: media server, VPN, file sync, etc.]
+                    </p>
+
+                    <h2>What surprised me</h2>
+                    <p>
+                        <!-- Placeholder — power draw, noise, uptime observations -->
+                        [Notes on power consumption, noise levels, and reliability to be added.]
+                    </p>
+
+                    <h2>Was it worth it</h2>
+                    <p>
+                        <!-- Placeholder — honest assessment -->
+                        [Honest assessment of the tradeoffs to be added.]
+                    </p>
+                </div>
+
+                <footer class="zh-post__foot">
+                    <ul class="zh-post__tags">
+                        {post.tags.map((t) => <li>{t}</li>)}
+                    </ul>
+                    <div class="zh-post__nav">
+                        <!-- No adjacent posts yet -->
+                    </div>
+                </footer>
+            </div>
+        </article>
+    </main>
+
+    <footer class="zh-footer zh-shell zh-footer__bottom">
+        <span>© 2026 Zijun Yu</span>
+        <span>— last updated <time>May 2026</time></span>
+    </footer>
+</BaseLayout>

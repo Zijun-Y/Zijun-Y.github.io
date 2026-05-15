@@ -1,0 +1,107 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SiteHeader from "@/components/SiteHeader.svelte";
+
+const posts = [
+    {
+        slug: "home-server",
+        date: "2026-05-15",
+        readMin: 8,
+        category: "Tech",
+        title: "Your desktop can be more than a PC",
+        excerpt:
+            "A gaming rig sits idle most of the day. Mine now runs a media server, a VPN, and a handful of services I actually use — without touching the Windows install.",
+        tags: ["Home Server", "Linux", "Self-hosting"],
+    },
+];
+
+function fmtDate(iso: string) {
+    return new Date(iso + "T00:00:00").toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
+}
+---
+
+<BaseLayout title="Writing · Zijun Yu">
+    <SiteHeader client:load />
+
+    <main class="zh-main">
+        <section class="zh-shell zh-blog">
+            <header class="zh-page__head">
+                <span class="zh-eyebrow">§ Writing</span>
+                <h1 class="zh-page__title">
+                    Occasional<br /><em>notes.</em>
+                </h1>
+                <p class="zh-page__sub">
+                    On statistics, software, and whatever else earns a few
+                    paragraphs. Updated when something feels worth saying.
+                </p>
+            </header>
+
+            <div class="zh-blog__filters" role="tablist" aria-label="Filter by category">
+                <button
+                    type="button"
+                    class="zh-blog__filter is-active"
+                    role="tab"
+                    aria-selected="true"
+                >
+                    <span class="zh-blog__filter-label">All</span>
+                    <span class="zh-blog__filter-count">{posts.length}</span>
+                </button>
+                <button
+                    type="button"
+                    class="zh-blog__filter"
+                    role="tab"
+                    aria-selected="false"
+                >
+                    <span class="zh-blog__filter-label">Tech</span>
+                    <span class="zh-blog__filter-count">
+                        {posts.filter((p) => p.category === "Tech").length}
+                    </span>
+                </button>
+            </div>
+
+            <ol class="zh-blog__list">
+                {
+                    posts.map((post, i) => (
+                        <li class="zh-blog__item">
+                            <a href={`/blog/${post.slug}`} class="zh-blog__row">
+                                <span class="zh-blog__num" aria-hidden="true">
+                                    {String(i + 1).padStart(2, "0")}
+                                </span>
+                                <div class="zh-blog__meta">
+                                    <span class="zh-blog__date">
+                                        <time datetime={post.date}>
+                                            {fmtDate(post.date)}
+                                        </time>
+                                    </span>
+                                    <span class="zh-blog__cat">{post.category}</span>
+                                    <span class="zh-blog__read">{post.readMin} min</span>
+                                </div>
+                                <div class="zh-blog__body">
+                                    <h2 class="zh-blog__title">{post.title}</h2>
+                                    <p class="zh-blog__excerpt">{post.excerpt}</p>
+                                    <ul class="zh-blog__tags">
+                                        {post.tags.map((t) => (
+                                            <li>{t}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <span class="zh-blog__arrow" aria-hidden="true">
+                                    →
+                                </span>
+                            </a>
+                        </li>
+                    ))
+                }
+            </ol>
+        </section>
+    </main>
+
+    <footer class="zh-footer zh-shell zh-footer__bottom">
+        <span>© 2026 Zijun Yu</span>
+        <span>— last updated <time>May 2026</time></span>
+    </footer>
+</BaseLayout>

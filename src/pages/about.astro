@@ -1,16 +1,93 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import SiteHeader from '@/components/SiteHeader.svelte';
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SiteHeader from "@/components/SiteHeader.svelte";
+import JourneyMap from "@/components/JourneyMap.astro";
+import PhotoWall from "@/components/PhotoWall.svelte";
+
+const photoMeta = [
+    { file: "bike-trail-spring",  caption: "Spring ride along the canal trail",       place: "Lachine Canal",             date: "Apr 2026" },
+    { file: "deer",               caption: "A deer at the edge of the field",          place: "Parc Omega",                date: "Oct 2024" },
+    { file: "chickadee-1",        caption: "Black-capped chickadee, patient sitter",   place: "Mont Saint-Bruno",          date: "Jan 2025" },
+    { file: "plump-of-geese",     caption: "A plump of Canada geese",                  place: "Saint-Laurent",             date: "Oct 2025" },
+    { file: "canada-goose",       caption: "Canada goose, very confident",             place: "Parc du Mont-Royal",        date: "Apr 2025" },
+    { file: "laurentides",        caption: "Laurentides in autumn colour",             place: "Laurentians",               date: "Oct 2024" },
+    { file: "leopard-frog",       caption: "Leopard frog, not moving",                place: "Marais Léon-Provancher",    date: "Aug 2025" },
+    { file: "hiking-trial-fall",  caption: "Fall trail, peak colour",                 place: "Mont Saint-Bruno",          date: "Oct 2024" },
+    { file: "nuthatch",           caption: "White-breasted nuthatch, going down",      place: "Parc du Mont-Royal",        date: "Feb 2025" },
+    { file: "bike-trial-summer",  caption: "Summer cycling, long shadows",             place: "Lachine Canal",             date: "Aug 2025" },
+    { file: "chickadee-2",        caption: "Chickadee in the pines",                   place: "Mont Saint-Hilaire",        date: "Feb 2025" },
+    { file: "lac-hertel",         caption: "Lac Hertel at sunrise",                    place: "Mont Saint-Hilaire",        date: "Jul 2024" },
+    { file: "bison",              caption: "A bison, unbothered",                      place: "Parc Omega",                date: "Sep 2024" },
+    { file: "green-head",         caption: "Green-head mallard",                       place: "Étang Sawyer",              date: "May 2025" },
+    { file: "sparrow",            caption: "Sparrow, streetwise",                      place: "Montréal",                  date: "Jun 2025" },
+    { file: "chickadee-3",        caption: "Chickadee, full frame",                    place: "Mont Saint-Bruno",          date: "Jan 2026" },
+    { file: "chance-cove",        caption: "Chance Cove, evening light",               place: "Newfoundland",              date: "Aug 2024" },
+    { file: "salix",              caption: "Salix in spring light",                    place: "Mont Saint-Bruno",          date: "May 2025" },
+    { file: "thymelaea",          caption: "Thymelaea, close up",                      place: "Montréal",                  date: "May 2025" },
+    { file: "checker-flag",       caption: "Checkered flag",                           place: "Circuit Gilles Villeneuve", date: "Jun 2024" },
+];
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/photos/*.jpeg",
+    { eager: true }
+);
+
+const photos = await Promise.all(
+    photoMeta.map(async (meta) => {
+        const mod = imageModules[`/src/assets/photos/${meta.file}.jpeg`];
+        if (!mod) return null;
+        const img = mod.default;
+        const thumb = await getImage({ src: img, width: 900, format: "webp" });
+        const full  = await getImage({ src: img, width: 1600, format: "webp" });
+        return {
+            name:    meta.file,
+            caption: meta.caption,
+            place:   meta.place,
+            date:    meta.date,
+            thumb:   thumb.src,
+            full:    full.src,
+            aspect:  img.width / img.height,
+        };
+    })
+);
+
+const validPhotos = photos.filter(Boolean) as NonNullable<(typeof photos)[number]>[];
 ---
 
 <BaseLayout title="About · Zijun Yu">
-  <SiteHeader client:load />
-  <main class="zh-main zh-shell" style="padding-top: calc(64px + clamp(48px, 9vh, 96px));">
-    <h1 style="font-family: var(--display); font-size: clamp(36px, 5vw, 64px); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); margin: 0;">
-      About
-    </h1>
-    <p style="margin-top: 24px; color: var(--muted); font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em;">
-      Content coming soon.
-    </p>
-  </main>
+    <SiteHeader client:load />
+
+    <main class="zh-main">
+        <section class="zh-shell zh-about">
+            <div class="zh-about__row">
+                <div class="zh-about__bio">
+                    <p>
+                        Outside of work I try to spend as much time outdoors as
+                        Montréal weather will allow — <em>hiking</em> in the warm
+                        months, <em>biking</em> when the streets are dry,
+                        <em>skiing</em> through the long winter, and a stubborn
+                        weekly <em>soccer</em> game my legs are slowly losing
+                        patience with.
+                    </p>
+                    <p>
+                        What keeps me coming back is the quiet of it — wide-open
+                        landscapes, light through trees, a river that hasn't quite
+                        decided where to go. I take a lot of photographs out there,
+                        mostly of birds, water, and whatever animal is willing to
+                        stand still long enough.
+                    </p>
+                </div>
+                <JourneyMap />
+            </div>
+        </section>
+
+        <PhotoWall photos={validPhotos} client:visible />
+    </main>
+
+    <footer class="zh-footer zh-shell zh-footer__bottom">
+        <span>© 2026 Zijun Yu</span>
+        <span>— last updated <time>May 2026</time></span>
+    </footer>
 </BaseLayout>

@@ -16,7 +16,9 @@
     }
 
     onMount(() => {
-        const onScroll = () => { scrolled = window.scrollY > 8; };
+        const onScroll = () => {
+            scrolled = window.scrollY > 8;
+        };
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
 
@@ -30,12 +32,17 @@
 
         return () => {
             window.removeEventListener("scroll", onScroll);
-            document.removeEventListener("click", onDocClick, { capture: true });
+            document.removeEventListener("click", onDocClick, {
+                capture: true,
+            });
         };
     });
 </script>
 
-<header class="zh-header {scrolled || mobileOpen ? 'zh-header--scrolled' : ''}" bind:this={headerEl}>
+<header
+    class="zh-header {scrolled || mobileOpen ? 'zh-header--scrolled' : ''}"
+    bind:this={headerEl}
+>
     <div class="zh-shell zh-header__inner">
         <button
             class="zh-getintouch"
@@ -56,6 +63,8 @@
             <a href="/#top" class="zh-nav__a">Home</a>
             <a href="/publications" class="zh-nav__a">Publications</a>
             <a href="/cv" class="zh-nav__a">CV</a>
+            <a href="/blog" class="zh-nav__a">Blog</a>
+            <a href="/about" class="zh-nav__a">About</a>
         </nav>
 
         <button
@@ -66,7 +75,12 @@
             aria-expanded={mobileOpen}
         >
             {#if mobileOpen}
-                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <svg
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    aria-hidden="true"
+                >
                     <path
                         d="M6 6l12 12M18 6L6 18"
                         fill="none"
@@ -76,7 +90,12 @@
                     />
                 </svg>
             {:else}
-                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <svg
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    aria-hidden="true"
+                >
                     <path
                         d="M4 7h16M4 12h16M4 17h16"
                         fill="none"
@@ -95,9 +114,21 @@
         aria-hidden={!mobileOpen}
     >
         <div class="zh-mobile-nav__inner">
-            <a href="/#top" class="zh-mobile-nav__a" onclick={closeMobile}>Home</a>
-            <a href="/publications" class="zh-mobile-nav__a" onclick={closeMobile}>Publications</a>
+            <a href="/#top" class="zh-mobile-nav__a" onclick={closeMobile}
+                >Home</a
+            >
+            <a
+                href="/publications"
+                class="zh-mobile-nav__a"
+                onclick={closeMobile}>Publications</a
+            >
             <a href="/cv" class="zh-mobile-nav__a" onclick={closeMobile}>CV</a>
+            <a href="/blog" class="zh-mobile-nav__a" onclick={closeMobile}
+                >Blog</a
+            >
+            <a href="/about" class="zh-mobile-nav__a" onclick={closeMobile}
+                >About</a
+            >
         </div>
     </nav>
 </header>
