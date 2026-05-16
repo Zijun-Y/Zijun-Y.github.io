@@ -9,13 +9,13 @@ const post = {
     category: "Tech",
     title: "Your desktop can be more than a PC",
     excerpt:
-        "A gaming rig sits idle most of the day. Mine now runs a media server, a VPN, and a handful of services I actually use — without touching the Windows install.",
+        "A gaming rig sits idle most of the day. Mine now runs a media server, a NAS, and a handful of services I actually use — without dealing with the Windows headache.",
     tags: ["Home Server", "Linux", "Self-hosting"],
 };
 
 const dateFormatted = new Date(post.date + "T00:00:00").toLocaleDateString(
     "en-US",
-    { month: "long", day: "numeric", year: "numeric" }
+    { month: "long", day: "numeric", year: "numeric" },
 );
 ---
 
@@ -42,7 +42,9 @@ const dateFormatted = new Date(post.date + "T00:00:00").toLocaleDateString(
                         <span class="zh-post__dot" aria-hidden="true">·</span>
                         <span class="zh-post__cat">{post.category}</span>
                         <span class="zh-post__dot" aria-hidden="true">·</span>
-                        <span class="zh-post__read">{post.readMin} min read</span>
+                        <span class="zh-post__read"
+                            >{post.readMin} min read</span
+                        >
                     </div>
                     <h1 class="zh-post__title">{post.title}</h1>
                     <p class="zh-post__lede">{post.excerpt}</p>
@@ -50,48 +52,128 @@ const dateFormatted = new Date(post.date + "T00:00:00").toLocaleDateString(
 
                 <div class="zh-post__body">
                     <p>
-                        For a long time my desktop was two machines pretending to
-                        be one: a Windows gaming rig that ran all week doing
-                        nothing, and a Raspberry Pi tucked behind the monitor
-                        running the few services I actually cared about. The Pi
-                        was slow, its SD card failed twice, and every time I
-                        wanted to add something new I spent an hour debugging
-                        why the old thing had stopped working.
+                        When you build a PC, the goal is to get the most out of
+                        your budget while keeping a sensible upgrade path. The
+                        problem is that one machine is rarely enough anymore. As
+                        someone who straddles research computing and everyday
+                        work, you end up needing Linux for experiments, Windows
+                        for compatibility, and something to share files cleanly
+                        across both. The usual answers — put up with a slow
+                        laptop, buy several devices, or pay for cloud instances
+                        you barely use — all have obvious costs, either in money
+                        or in patience.
                     </p>
                     <p>
-                        The fix turned out to be obvious: stop treating the desktop
-                        as a single-purpose gaming machine and let it do several
-                        things at once. Modern CPUs sit at two or three percent
-                        utilization most of the day. The electricity is already
-                        running. The hardware is already there.
+                        The better answer turns out to be the one already
+                        sitting under your desk. A modern CPU runs at two or
+                        three percent utilization most of the day. The
+                        electricity is already on. If you have an older machine
+                        collecting dust, it might quietly replace four EC2
+                        instances without breaking a sweat.
                     </p>
 
                     <h2>The setup</h2>
                     <p>
-                        <!-- Placeholder — will add hardware specs and OS setup details here -->
-                        [Hardware and OS configuration details to be added.]
+                        I timed the build well — RAM and SSD prices happened to
+                        be near historic lows. The CPU is a Ryzen 7 7700, which
+                        turned out to be more than sufficient. Instead of one
+                        powerful GPU I went with two modest ones: a 3050 drives
+                        the Windows desktop across two monitors, while a 5060 Ti
+                        handles GPU compute on a headless Linux VM. Consumer
+                        cards don't support hardware virtualization anyway, and
+                        Windows quietly claims a slice of your GPU even when
+                        you're trying to benchmark something. Separating the two
+                        workloads solved both problems at once.
                     </p>
                     <p>
-                        <!-- Placeholder — dual-boot vs WSL vs VM discussion -->
-                        [Discussion of the dual-boot / WSL2 / VM approach to be added.]
+                        The hypervisor layer is <em>Proxmox VE</em>, an
+                        open-source platform built on KVM and LXC. It exposes a
+                        clean web UI and a solid API, so you can spin up,
+                        suspend, or snapshot any VM from a browser — or from
+                        your phone, from anywhere. One practical caveat: if your
+                        server connects to your home network over Wi-Fi rather
+                        than ethernet, you need to install <code
+                            >wpasupplicant</code
+                        >
+                        manually before Proxmox can reach the internet. The trade-off
+                        is that you also lose the default Linux bridge, which means
+                        your VMs end up in their own subnet rather than on your home
+                        LAN. In practice this is fine — forward the ports you actually
+                        need, and everything else stays isolated behind one extra
+                        hop.
                     </p>
 
                     <h2>What actually runs on it</h2>
                     <p>
-                        <!-- Placeholder — services: Jellyfin, Tailscale, Nextcloud, etc. -->
-                        [Service stack walkthrough to be added: media server, VPN, file sync, etc.]
+                        The most immediately useful service is a NAS. HDDs are
+                        not obsolete — a couple of them plus <em>TrueNAS</em> gives
+                        you a network share that every device on the house can mount
+                        natively, regardless of whether it runs Windows, macOS, or
+                        Linux. Each ecosystem has its own file-sync story, but none
+                        of them talk to each other willingly. A shared network folder
+                        sidesteps the whole problem.
+                    </p>
+                    <p>
+                        On top of the NAS sits <em>Jellyfin</em>. Rather than
+                        casting a laptop screen to the TV or copying files to a
+                        USB stick, any media on the NAS streams directly to
+                        whatever is on the TV. The iGPU inside the Ryzen 7700
+                        handles hardware transcoding without issue, so a
+                        discrete GPU is not required for this at all.
+                    </p>
+                    <p>
+                        The headless Linux VM is where compute jobs actually
+                        run. The 5060 Ti is passed through directly to it, so
+                        GPU utilization is native — no virtualization overhead,
+                        no sharing with the display stack. <em>Tailscale</em>
+                        runs on the VM and takes about five minutes to set up;
+                        after that, the machine is reachable from anywhere on
+                        any device. From a laptop on a coffee-shop Wi-Fi or an
+                        SSH session on the phone, it behaves exactly like a
+                        local connection. This is, effectively, a private cloud
+                        instance that costs nothing to run once the hardware
+                        exists.
+                    </p>
+                    <p>
+                        The Windows VM is last and, by resource consumption,
+                        first. For emails, papers, and anything that genuinely
+                        needs a polished GUI, a full desktop environment is hard
+                        to beat. I have tried Linux desktop environments and
+                        tiling window managers; the display driver support for
+                        my monitor configuration was never quite right, and the
+                        friction accumulated. Windows as a VM, isolated from
+                        everything else, turns out to be the honest solution.
                     </p>
 
                     <h2>What surprised me</h2>
                     <p>
-                        <!-- Placeholder — power draw, noise, uptime observations -->
-                        [Notes on power consumption, noise levels, and reliability to be added.]
+                        Mostly, how quickly it disappears. Once everything is
+                        running, there is nothing to do. The VMs start on boot,
+                        the services are reachable, and a week goes by without
+                        touching the Proxmox UI. The setup becomes infrastructure
+                        rather than a project, which is the goal. The one genuine
+                        surprise is how little the system cares about anything
+                        except a power outage — that is the only thing that
+                        actually interrupts it. The other thing worth flagging is
+                        upgrades: Proxmox major version bumps require careful
+                        reading and a bit of patience. Day-to-day, nothing; but
+                        treat upgrades with the same respect you would a
+                        production server.
                     </p>
 
                     <h2>Was it worth it</h2>
                     <p>
-                        <!-- Placeholder — honest assessment -->
-                        [Honest assessment of the tradeoffs to be added.]
+                        Yes, with an honest caveat: the initial weekend of setup
+                        is real work, and you need to enjoy that kind of work for
+                        the answer to be yes. If debugging a Wi-Fi bridge issue
+                        at midnight sounds like a bad time, this is not for you.
+                        If it sounds like a Saturday well spent, the return is
+                        good. After the setup cost, the ongoing expense is
+                        essentially zero — the hardware was already there, the
+                        electricity was already running, and you now have a NAS,
+                        a media server, a GPU compute node, and a Windows desktop
+                        running simultaneously on one machine that used to do one
+                        thing.
                     </p>
                 </div>
 

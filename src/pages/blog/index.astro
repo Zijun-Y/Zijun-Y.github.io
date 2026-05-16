@@ -10,10 +10,12 @@ const posts = [
         category: "Tech",
         title: "Your desktop can be more than a PC",
         excerpt:
-            "A gaming rig sits idle most of the day. Mine now runs a media server, a VPN, and a handful of services I actually use — without touching the Windows install.",
+            "A gaming rig sits idle most of the day. Mine now runs a media server, a NAS, and a handful of services I actually use — without dealing with the Windows headache.",
         tags: ["Home Server", "Linux", "Self-hosting"],
     },
 ];
+
+const categories = ["All", ...new Set(posts.map((p) => p.category))];
 
 function fmtDate(iso: string) {
     return new Date(iso + "T00:00:00").toLocaleDateString("en-US", {
@@ -40,27 +42,22 @@ function fmtDate(iso: string) {
                 </p>
             </header>
 
-            <div class="zh-blog__filters" role="tablist" aria-label="Filter by category">
-                <button
-                    type="button"
-                    class="zh-blog__filter is-active"
-                    role="tab"
-                    aria-selected="true"
-                >
-                    <span class="zh-blog__filter-label">All</span>
-                    <span class="zh-blog__filter-count">{posts.length}</span>
-                </button>
-                <button
-                    type="button"
-                    class="zh-blog__filter"
-                    role="tab"
-                    aria-selected="false"
-                >
-                    <span class="zh-blog__filter-label">Tech</span>
-                    <span class="zh-blog__filter-count">
-                        {posts.filter((p) => p.category === "Tech").length}
-                    </span>
-                </button>
+            <div class="zh-blog__filters" aria-label="Categories">
+                {
+                    categories.map((c) => (
+                        <span
+                            class={`zh-blog__filter ${c === "All" ? "is-active" : ""}`}
+                        >
+                            <span class="zh-blog__filter-label">{c}</span>
+                            <span class="zh-blog__filter-count">
+                                {c === "All"
+                                    ? posts.length
+                                    : posts.filter((p) => p.category === c)
+                                          .length}
+                            </span>
+                        </span>
+                    ))
+                }
             </div>
 
             <ol class="zh-blog__list">
@@ -77,19 +74,28 @@ function fmtDate(iso: string) {
                                             {fmtDate(post.date)}
                                         </time>
                                     </span>
-                                    <span class="zh-blog__cat">{post.category}</span>
-                                    <span class="zh-blog__read">{post.readMin} min</span>
+                                    <span class="zh-blog__cat">
+                                        {post.category}
+                                    </span>
+                                    <span class="zh-blog__read">
+                                        {post.readMin} min
+                                    </span>
                                 </div>
                                 <div class="zh-blog__body">
                                     <h2 class="zh-blog__title">{post.title}</h2>
-                                    <p class="zh-blog__excerpt">{post.excerpt}</p>
+                                    <p class="zh-blog__excerpt">
+                                        {post.excerpt}
+                                    </p>
                                     <ul class="zh-blog__tags">
                                         {post.tags.map((t) => (
                                             <li>{t}</li>
                                         ))}
                                     </ul>
                                 </div>
-                                <span class="zh-blog__arrow" aria-hidden="true">
+                                <span
+                                    class="zh-blog__arrow"
+                                    aria-hidden="true"
+                                >
                                     →
                                 </span>
                             </a>
