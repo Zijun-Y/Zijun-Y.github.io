@@ -270,7 +270,7 @@ body::after {
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: 24px;
-    padding-top: 14px;
+    padding-top: calc(14px + env(safe-area-inset-top, 0px));
     padding-bottom: 14px;
 }
 
@@ -416,7 +416,10 @@ body::after {
 }
 
 .zh-cpanel__inner {
-    padding: 22px clamp(20px, 4vw, 32px) 56px;
+    padding: calc(22px + env(safe-area-inset-top, 0px))
+        calc(clamp(20px, 4vw, 32px) + env(safe-area-inset-right, 0px))
+        calc(56px + env(safe-area-inset-bottom, 0px))
+        clamp(20px, 4vw, 32px);
     display: flex;
     flex-direction: column;
     gap: 28px;
@@ -1224,7 +1227,7 @@ body::after {
 
     .zh-yearrail {
         position: sticky;
-        top: 56px;
+        top: calc(56px + env(safe-area-inset-top, 0px));
         left: auto;
         transform: none;
         z-index: 40;
