@@ -1296,9 +1296,6 @@ body::after {
     .zh-getintouch__label {
         font-size: 12px;
     }
-    .zh-cpanel__photo {
-        aspect-ratio: 4 / 3;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
