@@ -34,22 +34,36 @@ import SiteHeader from "@/components/SiteHeader.svelte";
             </a>
         </div>
 
+        <p class="zh-cv__tagline">
+            PhD student in Mathematics and Statistics developing
+            distribution-free methods for uncertainty quantification and risk
+            control, with a current focus on the reliability, evaluation, and
+            safety of LLMs and autonomous agents. First-author work at ICML
+            2026 and three manuscripts under review.
+        </p>
+
         <!-- Education -->
         <section class="zh-cv__section">
             <h2 class="zh-cv__section-title">Education</h2>
             <div class="zh-cv__entries">
                 <div class="zh-cv__entry">
-                    <div class="zh-cv__entry-period">2025 – Present</div>
+                    <div class="zh-cv__entry-period">2025 – 2029 (exp.)</div>
                     <div class="zh-cv__entry-body">
                         <div class="zh-cv__entry-role">
                             Ph.D. in Mathematics and Statistics
+                            <span class="zh-cv__entry-tag">Direct-entry</span>
                         </div>
                         <div class="zh-cv__entry-org">
                             McGill University, Montréal, QC
                         </div>
                         <div class="zh-cv__entry-detail">
-                            Research: Conformal Prediction, Survival Analysis,
-                            Deep Learning
+                            Supervisors: Prof. Masoud Asgharian, Prof. Vahid
+                            Partovi Nia
+                        </div>
+                        <div class="zh-cv__entry-detail">
+                            Research: distribution-free uncertainty
+                            quantification and risk control; reliability and
+                            safety of LLMs and autonomous agents
                         </div>
                     </div>
                 </div>
@@ -75,33 +89,70 @@ import SiteHeader from "@/components/SiteHeader.svelte";
             <h2 class="zh-cv__section-title">Awards &amp; Scholarships</h2>
             <ul class="zh-cv__awards">
                 <li>
-                    <span class="zh-cv__award-name"
-                        >Graduate Excellence Award</span
-                    >
-                    <span class="zh-cv__award-year">2025–</span>
+                    <span class="zh-cv__award-text">
+                        <span class="zh-cv__award-name"
+                            >ISM Graduate Scholarship</span
+                        >
+                        <span class="zh-cv__award-org"
+                            >Institut des sciences mathématiques</span
+                        >
+                    </span>
+                    <span class="zh-cv__award-year">2026–2027</span>
                 </li>
                 <li>
-                    <span class="zh-cv__award-name"
-                        >ISM Graduate Scholarship</span
-                    >
+                    <span class="zh-cv__award-text">
+                        <span class="zh-cv__award-name">ISM Travel Grant</span>
+                        <span class="zh-cv__award-org"
+                            >Institut des sciences mathématiques</span
+                        >
+                    </span>
+                    <span class="zh-cv__award-year">2026</span>
+                </li>
+                <li>
+                    <span class="zh-cv__award-text">
+                        <span class="zh-cv__award-name"
+                            >ISM Graduate Scholarship</span
+                        >
+                        <span class="zh-cv__award-org"
+                            >Institut des sciences mathématiques</span
+                        >
+                    </span>
                     <span class="zh-cv__award-year">2025–2026</span>
                 </li>
                 <li>
-                    <span class="zh-cv__award-name"
-                        >First-Class Honours Degree</span
-                    >
+                    <span class="zh-cv__award-text">
+                        <span class="zh-cv__award-name"
+                            >Graduate Excellence Award</span
+                        >
+                        <span class="zh-cv__award-org">McGill University</span>
+                    </span>
+                    <span class="zh-cv__award-year">2025–2029</span>
+                </li>
+                <li>
+                    <span class="zh-cv__award-text">
+                        <span class="zh-cv__award-name"
+                            >First-Class Honours Degree</span
+                        >
+                        <span class="zh-cv__award-org">McGill University</span>
+                    </span>
                     <span class="zh-cv__award-year">2020</span>
                 </li>
                 <li>
-                    <span class="zh-cv__award-name"
-                        >Science Undergraduate Research Award (SURA)</span
-                    >
+                    <span class="zh-cv__award-text">
+                        <span class="zh-cv__award-name"
+                            >Science Undergraduate Research Award (SURA)</span
+                        >
+                        <span class="zh-cv__award-org">McGill University</span>
+                    </span>
                     <span class="zh-cv__award-year">2019</span>
                 </li>
                 <li>
-                    <span class="zh-cv__award-name"
-                        >James McGill Scholarship</span
-                    >
+                    <span class="zh-cv__award-text">
+                        <span class="zh-cv__award-name"
+                            >James McGill Scholarship</span
+                        >
+                        <span class="zh-cv__award-org">McGill University</span>
+                    </span>
                     <span class="zh-cv__award-year">2016</span>
                 </li>
             </ul>
@@ -110,6 +161,11 @@ import SiteHeader from "@/components/SiteHeader.svelte";
         <!-- Publications -->
         <section class="zh-cv__section">
             <h2 class="zh-cv__section-title">Publications</h2>
+            <p class="zh-cv__footnote zh-cv__footnote--top">
+                <sup>†</sup> Equal contribution.
+            </p>
+
+            <h3 class="zh-cv__subhead">Refereed</h3>
             <ol class="zh-cv__pubs">
                 <li class="zh-cv__pub">
                     <span class="zh-cv__pub-authors">
@@ -131,6 +187,24 @@ import SiteHeader from "@/components/SiteHeader.svelte";
                             target="_blank"
                             rel="noopener noreferrer">arXiv ↗</a
                         >
+                    </span>
+                </li>
+            </ol>
+
+            <h3 class="zh-cv__subhead">Under Review</h3>
+            <ol class="zh-cv__pubs">
+                <li class="zh-cv__pub">
+                    <span class="zh-cv__pub-authors">
+                        <strong>Zijun Yu</strong><sup>†</sup>, Yu Gu<sup
+                            >†</sup
+                        >, Vahid Partovi Nia, Masoud Asgharian.
+                    </span>
+                    <span class="zh-cv__pub-title">
+                        "G-CARB: Graph-Localized Conformal Agent Risk Budgets
+                        for Compositional Harm."
+                    </span>
+                    <span class="zh-cv__pub-venue">
+                        <em>Under review</em>, 2026.
                     </span>
                 </li>
                 <li class="zh-cv__pub">
@@ -165,7 +239,50 @@ import SiteHeader from "@/components/SiteHeader.svelte";
                     </span>
                 </li>
             </ol>
-            <p class="zh-cv__footnote"><sup>†</sup> Equal contribution.</p>
+        </section>
+
+        <!-- Presentations -->
+        <section class="zh-cv__section">
+            <h2 class="zh-cv__section-title">Presentations</h2>
+            <ol class="zh-cv__pubs">
+                <li class="zh-cv__pub">
+                    <span class="zh-cv__pub-title">
+                        "Beyond Procedure: Substantive Fairness in Conformal
+                        Prediction." Poster presentation.
+                    </span>
+                    <span class="zh-cv__pub-venue">
+                        <em
+                            >International Conference on Machine Learning (ICML)</em
+                        >, Seoul, South Korea, 2026.
+                    </span>
+                </li>
+            </ol>
+        </section>
+
+        <!-- Patents and Open-Source Software -->
+        <section class="zh-cv__section">
+            <h2 class="zh-cv__section-title"
+                >Patents &amp; Open-Source Software</h2
+            >
+            <ul class="zh-cv__bullets">
+                <li>
+                    <strong>Patent application</strong> filed (Layer 6 AI, 2026),
+                    related to methods in "Beyond Procedure: Substantive
+                    Fairness in Conformal Prediction."
+                </li>
+                <li>
+                    <strong>llm-in-the-loop-conformal-fairness</strong> —
+                    open-source release of the evaluation and benchmarking
+                    framework for the ICML 2026 paper.
+                    <a
+                        href="https://github.com/layer6ai-labs/llm-in-the-loop-conformal-fairness"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >github.com/layer6ai-labs/llm-in-the-loop-conformal-fairness
+                        ↗</a
+                    >
+                </li>
+            </ul>
         </section>
 
         <!-- Work Experience -->
@@ -180,20 +297,21 @@ import SiteHeader from "@/components/SiteHeader.svelte";
                                 >Mitacs Internship</span
                             >
                         </div>
-                        <div class="zh-cv__entry-org">Layer6 AI, Toronto</div>
+                        <div class="zh-cv__entry-org">Layer 6 AI, Toronto</div>
                         <ul class="zh-cv__bullets">
                             <li>
                                 Conducted research on substantive fairness in
-                                conformal prediction, contributing to the paper
-                                "Beyond Procedure: Substantive Fairness in
-                                Conformal Prediction" (ICML 2026).
+                                conformal prediction, leading to "Beyond
+                                Procedure: Substantive Fairness in Conformal
+                                Prediction" (ICML 2026) and a filed patent
+                                application.
                             </li>
                             <li>
-                                Designed and architected a modular codebase to
-                                support large-scale experiment pipelines,
+                                Designed and architected a modular codebase
+                                supporting large-scale experiment pipelines,
                                 enabling reproducible benchmarking across
                                 multiple fairness criteria, datasets, and model
-                                families.
+                                families; released open source.
                             </li>
                             <li>
                                 Collaborated with research scientists on
@@ -211,33 +329,23 @@ import SiteHeader from "@/components/SiteHeader.svelte";
                         </div>
                         <ul class="zh-cv__bullets">
                             <li>
-                                Incorporated data analysis and visualization
-                                capabilities into existing software solutions.
+                                Built a Retrieval-Augmented Generation chatbot
+                                pipeline (web crawler, vector database, LLM
+                                APIs) and added data analysis and
+                                visualization capabilities to the core
+                                product.
                             </li>
                             <li>
-                                Implemented a Retrieval-Augmented Generation
-                                (RAG) chatbot workflow with web crawler, vector
-                                database, and OpenAI APIs.
+                                Diagnosed and resolved memory leaks, race
+                                conditions, and data-consistency failures
+                                across frontend and backend systems; applied
+                                time-series analysis to production logs to
+                                audit system performance and identify
+                                regressions.
                             </li>
                             <li>
-                                Developed third-party integrations and plugins:
-                                Microsoft Teams, Google OAuth, WordPress,
-                                Stripe, and Intuit.
-                            </li>
-                            <li>
-                                Applied time-series analysis to monitor system
-                                performance and identify trends in production
-                                logs.
-                            </li>
-                            <li>
-                                Redesigned and refactored frontend and backend
-                                systems to eliminate memory leaks and data
-                                inconsistencies under race conditions.
-                            </li>
-                            <li>
-                                Led a team of junior developers, providing
-                                mentorship and coordinating delivery across
-                                multiple projects.
+                                Led and mentored a team of junior developers
+                                across multiple concurrent projects.
                             </li>
                         </ul>
                     </div>
@@ -250,26 +358,23 @@ import SiteHeader from "@/components/SiteHeader.svelte";
             <h2 class="zh-cv__section-title">Technical Skills</h2>
             <div class="zh-cv__skills">
                 <div class="zh-cv__skill-row">
-                    <span class="zh-cv__skill-label">Languages</span>
+                    <span class="zh-cv__skill-label">ML</span>
                     <span class="zh-cv__skill-value"
-                        >Python, R, Java, TypeScript</span
+                        >PyTorch, Hugging Face Transformers, vLLM,
+                        llama.cpp</span
                     >
                 </div>
                 <div class="zh-cv__skill-row">
-                    <span class="zh-cv__skill-label">Frameworks</span>
+                    <span class="zh-cv__skill-label">Languages</span>
                     <span class="zh-cv__skill-value"
-                        >Spring, Maven, GraalVM, React, Deno, Astro, Svelte</span
+                        >Python, R, Java, TypeScript, SQL</span
                     >
                 </div>
                 <div class="zh-cv__skill-row">
                     <span class="zh-cv__skill-label">Infrastructure</span>
                     <span class="zh-cv__skill-value"
-                        >PostgreSQL, Redis, Docker, Proxmox VE</span
+                        >Docker, PostgreSQL, Redis, Git, Proxmox VE</span
                     >
-                </div>
-                <div class="zh-cv__skill-row">
-                    <span class="zh-cv__skill-label">Version Control</span>
-                    <span class="zh-cv__skill-value">Git, Subversion</span>
                 </div>
             </div>
         </section>
@@ -291,7 +396,7 @@ import SiteHeader from "@/components/SiteHeader.svelte";
         flex-wrap: wrap;
         padding-bottom: clamp(36px, 6vh, 56px);
         border-bottom: 0.5px solid var(--rule);
-        margin-bottom: clamp(36px, 6vh, 56px);
+        margin-bottom: clamp(20px, 3vh, 28px);
     }
     .zh-cv__title {
         font-family: var(--display);
@@ -323,6 +428,28 @@ import SiteHeader from "@/components/SiteHeader.svelte";
         background: var(--ink);
         color: var(--bg);
         border-color: var(--ink);
+    }
+
+    .zh-cv__tagline {
+        font-family: var(--display);
+        font-size: clamp(16px, 1.6vw, 19px);
+        line-height: 1.55;
+        color: var(--muted);
+        max-width: 62ch;
+        margin: 0 0 clamp(36px, 6vh, 56px);
+        text-wrap: pretty;
+    }
+
+    .zh-cv__subhead {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 22px 0 4px;
+    }
+    .zh-cv__subhead:first-of-type {
+        margin-top: 0;
     }
 
     .zh-cv__section {
@@ -431,8 +558,18 @@ import SiteHeader from "@/components/SiteHeader.svelte";
     .zh-cv__awards li:first-child {
         border-top: 0.5px solid var(--rule);
     }
+    .zh-cv__award-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
     .zh-cv__award-name {
         color: var(--ink);
+    }
+    .zh-cv__award-org {
+        font-size: 12px;
+        color: var(--muted);
+        font-style: italic;
     }
     .zh-cv__award-year {
         font-family: var(--mono);
@@ -511,6 +648,9 @@ import SiteHeader from "@/components/SiteHeader.svelte";
         font-size: 12px;
         color: var(--muted);
         font-style: italic;
+    }
+    .zh-cv__footnote--top {
+        margin: 0 0 4px;
     }
 
     /* Skills */

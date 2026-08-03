@@ -1,9 +1,8 @@
 \documentclass[11pt,letterpaper]{article}
-\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+\usepackage[left=2cm, right=2cm, top=1.8cm, bottom=1.8cm]{geometry}
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{titlesec}
-\usepackage{fontawesome}
 
 \hypersetup{
 	colorlinks=true,
@@ -14,6 +13,8 @@
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
 \titlespacing*{\section}{0pt}{0.5em}{0.5em}
 
+\newcommand{\subhead}[1]{\vspace{0.15cm}\noindent\textit{#1}\vspace{0.1cm}}
+
 \setlist[itemize]{left=0.5cm, labelsep=0.2cm, itemsep=0.1em}
 
 \begin{document}
@@ -23,11 +24,16 @@
 %====================
 
 \begin{center}
-	{\LARGE \textbf{Yu, Zijun}}\\[0.2cm]
-	Email: \href{mailto:zijun.yu@mail.mcgill.ca}{zijun.yu@mail.mcgill.ca}
+	{\LARGE \textbf{Yu, Zijun}}\\[0.15cm]
+	\href{mailto:zijun.yu@mail.mcgill.ca}{zijun.yu@mail.mcgill.ca}
 \end{center}
 
-\vspace{0.3cm}
+\vspace{0.15cm}
+
+\noindent
+PhD student in Mathematics and Statistics developing distribution-free methods for uncertainty quantification and risk control, with a current focus on the reliability, evaluation, and safety of LLMs and autonomous agents. First-author work at ICML 2026 and three manuscripts under review.
+
+\vspace{0.2cm}
 
 %====================
 %	EDUCATION
@@ -36,20 +42,21 @@
 \section*{Education}
 
 \noindent
-\begin{tabular}{p{0.17\textwidth} p{0.72\textwidth}}
-	\textbf{2025 -- Present} & \textbf{Ph.D. in Mathematics and Statistics}          \\
-	                         & McGill University, Montreal, QC                       \\
-	                         & Research Interest: Neural Networks, Survival Analysis
+\begin{tabular}{p{0.17\textwidth} p{0.75\textwidth}}
+	\textbf{2025 -- 2029 (exp.)} & \textbf{Ph.D. in Mathematics and Statistics} (direct-entry)  \\
+	                             & McGill University, Montreal, QC                             \\
+	                             & Supervisor: Prof. Masoud Asgharian, Prof. Vahid Partovi Nia\\
+	                             & Research area: distribution-free uncertainty quantification and risk control; reliability and safety of LLMs and autonomous agents
 \end{tabular}
 \\[0.15cm]
 \noindent
-\begin{tabular}{p{0.17\textwidth} p{0.72\textwidth}}
+\begin{tabular}{p{0.17\textwidth} p{0.75\textwidth}}
 	\textbf{2016 -- 2020} & \textbf{B.Sc. Honours in Statistics and Computer Science} \\
 	                      & McGill University, Montreal, QC                           \\
 	                      & First-Class Honours Degree                                \\
 \end{tabular}
 
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 %====================
 %	AWARDS AND SCHOLARSHIPS
@@ -58,32 +65,41 @@
 \section*{Awards and Scholarships}
 
 \begin{itemize}[leftmargin=0.5cm]
-	\item \textbf{Graduate Excellence Award} \hfill 2025-
-
-	\item \textbf{ISM Graduate Scholarship} \hfill 2025-2026
-
-	\item \textbf{First-Class Honours Degree} \hfill 2020
-
-	\item \textbf{Science Undergraduate Research Award (SURA)} \hfill 2019
-
-	\item \textbf{James McGill Scholarship} \hfill 2016
+	\item \textbf{ISM Graduate Scholarship}, Institut des sciences math\'ematiques \hfill 2026--2027
+	\item \textbf{ISM Travel Grant}, Institut des sciences math\'ematiques \hfill 2026
+	\item \textbf{ISM Graduate Scholarship}, Institut des sciences math\'ematiques \hfill 2025--2026
+	\item \textbf{Graduate Excellence Award}, McGill University \hfill 2025--2029
+	\item \textbf{First-Class Honours Degree}, McGill University \hfill 2020
+	\item \textbf{Science Undergraduate Research Award (SURA)}, McGill University \hfill 2019
+	\item \textbf{James McGill Scholarship}, McGill University \hfill 2016
 \end{itemize}
 
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 %====================
-%	PUBLICATIONS AND PRESENTATIONS
+%	PUBLICATIONS
 %====================
 
-\section*{Publications and Presentations}
+\section*{Publications}
+
+\noindent{\small $^\dagger$ Equal contribution.}
+
+\subhead{Refereed}
 
 \begin{itemize}[leftmargin=0.5cm]
-
 	\item Pengqi Liu$^\dagger$, \textbf{Zijun Yu}$^\dagger$, Mouloud Belbahri, Arthur Charpentier,
 	      Masoud Asgharian, Jesse C. Cresswell.
 	      ``Beyond Procedure: Substantive Fairness in Conformal Prediction.''
 	      \textit{International Conference on Machine Learning (ICML)}, 2026.
 	      \href{https://arxiv.org/abs/2602.16794}{arXiv:2602.16794}
+\end{itemize}
+
+\subhead{Under Review}
+
+\begin{itemize}[leftmargin=0.5cm]
+	\item \textbf{Zijun Yu}$^\dagger$, Yu Gu$^\dagger$, Vahid Partovi Nia, Masoud Asgharian.
+	      ``G-CARB: Graph-Localized Conformal Agent Risk Budgets for Compositional Harm.''
+	      \textit{Under review}, 2026.
 
 	\item Yu Gu$^\dagger$, \textbf{Zijun Yu}$^\dagger$, Vahid Partovi Nia, Masoud Asgharian.
 	      ``Pause and Reflect: Conformal Aggregation for Chain-of-Thought Reasoning.''
@@ -93,28 +109,52 @@
 	\item Yu Gu$^\dagger$, \textbf{Zijun Yu}$^\dagger$, Chi-Kuang Yeh, Xinyu Wang, Ziyang Song.
 	      ``Severity-Controlled Prediction Sets for Medication Recommendation.''
 	      \textit{Under review}, 2026.
-
 \end{itemize}
 
-\noindent{\small $^\dagger$ Equal contribution.}
-
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 %====================
-%	WORK EXPERIENCE
+%	PRESENTATIONS
 %====================
 
-\section*{Work Experience}
-
-\noindent
-\textbf{2025 -- 2026} \hfill \textit{Mitacs Internship — Student Researcher} \\
-Layer6 AI, Toronto
+\section*{Presentations}
 
 \begin{itemize}[leftmargin=0.5cm]
-	\item Conducted research on substantive fairness in conformal prediction, contributing to the
-	      paper ``Beyond Procedure: Substantive Fairness in Conformal Prediction'' (ICML 2026).
-	\item Designed and architected a modular codebase to support large-scale experiment pipelines,
-	      enabling reproducible benchmarking across multiple fairness criteria, datasets, and model families.
+	\item ``Beyond Procedure: Substantive Fairness in Conformal Prediction.'' Poster presentation,
+	      \textit{International Conference on Machine Learning (ICML)}, Seoul, South Korea, 2026.
+\end{itemize}
+
+\vspace{0.2cm}
+
+%====================
+%	PATENTS AND SOFTWARE
+%====================
+
+\section*{Patents and Open-Source Software}
+
+\begin{itemize}[leftmargin=0.5cm]
+	\item \textbf{Patent application} filed (Layer 6 AI, 2026), related to methods in 'Beyond Procedure: Substantive Fairness in Conformal Prediction.'
+	\item \textbf{\texttt{llm-in-the-loop-conformal-fairness}} --- open-source release of the evaluation
+	      and benchmarking framework for the ICML 2026 paper.
+	      \href{https://github.com/layer6ai-labs/llm-in-the-loop-conformal-fairness}{github.com/layer6ai-labs/llm-in-the-loop-conformal-fairness}
+\end{itemize}
+
+\vspace{0.2cm}
+
+%====================
+%	RESEARCH AND WORK EXPERIENCE
+%====================
+
+\section*{Research and Work Experience}
+
+\noindent
+\textbf{2025 -- 2026} \hfill \textit{Mitacs Internship --- Student Researcher} \\
+Layer 6 AI, Toronto
+
+\begin{itemize}[leftmargin=0.5cm]
+	\item Conducted research on substantive fairness in conformal prediction, leading to
+	      ``Beyond Procedure: Substantive Fairness in Conformal Prediction'' (ICML 2026) and a filed patent application.
+	\item Designed and architected a modular codebase supporting large-scale experiment pipelines, enabling reproducible benchmarking across multiple fairness criteria, datasets, and model families; released open source.
 	\item Collaborated with research scientists on theoretical analysis and empirical validation.
 \end{itemize}
 
@@ -125,18 +165,18 @@ Layer6 AI, Toronto
 OneDesk Inc., Montreal
 
 \begin{itemize}[leftmargin=0.5cm]
-	\item Incorporated data analysis and visualization capabilities into existing software solutions
-	\item Implemented a Retrieval-Augmented Generation (RAG) chatbot workflow with web crawler, vector database, and OpenAI APIs.
-	\item Developed third-party integrations and plugins for platforms such as Microsoft Teams App, Google OAuth, WordPress Plugin, Stripe payment processing, and Intuit invoice processing.
-	\item Applied time-series analysis and correlation to analyze system logs, monitor system performance, and identify trends.
-	\item Redesigned and refactored both frontend and backend systems to fix memory leaks and resolve data inconsistencies, ensuring robustness under race conditions and optimizing performance.
-	\item Led a team of junior developers, providing mentorship and supervision across multiple projects.\\
-	      Coordinated team efforts to meet project goals efficiently.
+	\item Built a Retrieval-Augmented Generation chatbot pipeline (web crawler, vector database, LLM APIs) and added data analysis and visualization capabilities to the core product.
+	\item Diagnosed and resolved memory leaks, race conditions, and data-consistency failures across frontend and backend systems; applied time-series analysis to production logs to audit system performance and identify regressions.
+	\item Led and mentored a team of junior developers across multiple concurrent projects.
 \end{itemize}
+
+\vspace{0.2cm}
 
 \section*{Technical Skills}
 
-\noindent Python, R, Java (Spring, Maven, GraalVM), TypeScript (React, Deno), Redis\\
-SQL (PostgreSQL), Virtualization (Docker, Proxmox VE), Version Control System (Git, Subversion)
+\noindent
+\textbf{ML:} PyTorch, Hugging Face Transformers, vLLM, llama.cpp \\
+\textbf{Languages:} Python, R, Java, TypeScript, SQL \\
+\textbf{Infrastructure:} Docker, PostgreSQL, Redis, Git, Proxmox VE
 
 \end{document}

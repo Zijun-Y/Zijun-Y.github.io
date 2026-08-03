@@ -7,6 +7,8 @@
     // Force text (non-emoji) rendering of ↗ on iOS via variation selector U+FE0E
     const ARW = "↗︎";
 
+    let { portraitSrc, portraitSrcSet }: { portraitSrc?: string; portraitSrcSet?: string } = $props();
+
     let open = $state(false);
     let copied = $state(false);
     let copyTimer: ReturnType<typeof setTimeout> | null = null;
@@ -108,72 +110,19 @@
             </button>
         </header>
 
-        <!-- Portrait placeholder -->
-        <div
-            class="zh-cpanel__photo"
-            role="img"
-            aria-label="Photo placeholder for Zijun Yu"
-        >
-            <svg
-                viewBox="0 0 300 360"
-                preserveAspectRatio="xMidYMid slice"
-                class="zh-cpanel__photo-svg"
-                aria-hidden="true"
-            >
-                <defs>
-                    <linearGradient id="zhPBg" x1="0" y1="0" x2="0" y2="1">
-                        <stop
-                            offset="0%"
-                            stop-color="var(--accent)"
-                            stop-opacity="0.14"
-                        />
-                        <stop
-                            offset="100%"
-                            stop-color="var(--accent)"
-                            stop-opacity="0.04"
-                        />
-                    </linearGradient>
-                    <pattern
-                        id="zhPDots"
-                        width="6"
-                        height="6"
-                        patternUnits="userSpaceOnUse"
-                    >
-                        <circle
-                            cx="3"
-                            cy="3"
-                            r="0.6"
-                            fill="var(--ink)"
-                            fill-opacity="0.12"
-                        />
-                    </pattern>
-                </defs>
-                <rect width="300" height="360" fill="url(#zhPBg)" />
-                <rect width="300" height="360" fill="url(#zhPDots)" />
-                <path
-                    d="M0 360 Q30 260 90 240 Q120 234 150 234 Q180 234 210 240 Q270 260 300 360 Z"
-                    fill="var(--ink)"
-                    fill-opacity="0.78"
+        <!-- Portrait -->
+        <div class="zh-cpanel__photo">
+            {#if portraitSrc}
+                <img
+                    class="zh-cpanel__photo-img"
+                    src={portraitSrc}
+                    srcset={portraitSrcSet}
+                    sizes="(max-width: 440px) 92vw, 440px"
+                    alt="Portrait of Zijun Yu"
+                    loading="lazy"
+                    decoding="async"
                 />
-                <circle
-                    cx="150"
-                    cy="170"
-                    r="62"
-                    fill="var(--ink)"
-                    fill-opacity="0.78"
-                />
-                <text
-                    x="150"
-                    y="332"
-                    text-anchor="middle"
-                    fill="var(--bg)"
-                    font-family="var(--mono)"
-                    font-size="10"
-                    letter-spacing="0.12em"
-                >
-                    PHOTO · PLACEHOLDER
-                </text>
-            </svg>
+            {/if}
         </div>
 
         <div class="zh-cpanel__body">

@@ -42,6 +42,22 @@ export const publications: Publication[] = [
     {
         year: 2026,
         venue: 'In submission',
+        venueLong: 'Submitted — under review',
+        title: 'G-CARB: Graph-Localized Conformal Agent Risk Budgets for Compositional Harm',
+        authors: [
+            { name: 'Zijun Yu', coFirst: true, self: true },
+            { name: 'Yu Gu', coFirst: true },
+            { name: 'Vahid Partovi Nia' },
+            { name: 'Masoud Asgharian' },
+        ],
+        tags: ['Conformal Prediction', 'Agent Safety'],
+        status: 'submitted',
+        featured: false,
+        links: {},
+    },
+    {
+        year: 2026,
+        venue: 'In submission',
         venueLong: 'Submitted — preprint available',
         title: 'Pause and Reflect: Conformal Aggregation for Chain-of-Thought Reasoning',
         authors: [
