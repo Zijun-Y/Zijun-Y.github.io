@@ -1,8 +1,17 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Publication } from "@/content/publications";
+    import { statusLabel, type Publication } from "@/content/publications";
 
     let { publications, showHeading = true }: { publications: Publication[]; showHeading?: boolean } = $props();
+
+    // Explainers expand inline; several may be open at once
+    let openIdx = $state(new Set<number>());
+    function toggle(idx: number) {
+        const next = new Set(openIdx);
+        if (next.has(idx)) next.delete(idx);
+        else next.add(idx);
+        openIdx = next;
+    }
 
     let sectionEl: HTMLElement;
     let activeYear = $state(publications[0]?.year ?? 0);
@@ -84,6 +93,7 @@
                 Recent work in <em>conformal prediction</em>.
             </h2>
             <p class="zh-pubs__sub">
+                A selection — see <a href="/publications">all publications</a>.
                 <sup>†</sup> denotes equal contribution.
             </p>
         </header>
@@ -103,23 +113,21 @@
                     </div>
 
                     <header class="zh-pub__head">
-                        <span class="zh-pub__venue" title={pub.venueLong}>
+                        <span
+                            class="zh-pub__venue"
+                            title={pub.presentation
+                                ? `${pub.venueLong} — ${pub.presentation}`
+                                : pub.venueLong}
+                        >
                             <span class="zh-pub__venue-name">{pub.venue}</span>
                             <span class="zh-pub__venue-sep">·</span>
                             <span class="zh-pub__venue-year">{pub.year}</span>
-                            {#if pub.status === "accepted"}
-                                <span class="zh-pub__status">Accepted</span>
-                            {:else if pub.status === "preprint"}
-                                <span
-                                    class="zh-pub__status zh-pub__status--quiet"
-                                    >Preprint</span
-                                >
-                            {:else if pub.status === "submitted"}
-                                <span
-                                    class="zh-pub__status zh-pub__status--quiet"
-                                    >Under review</span
-                                >
-                            {/if}
+                            <span
+                                class="zh-pub__status {pub.status === 'accepted'
+                                    ? ''
+                                    : 'zh-pub__status--quiet'}"
+                                >{statusLabel[pub.status]}</span
+                            >
                         </span>
                     </header>
 
@@ -147,6 +155,23 @@
                             {/each}
                         </ul>
                         <div class="zh-pub__links">
+                            {#if pub.explainer}
+                                <button
+                                    type="button"
+                                    class="zh-pub__more {openIdx.has(idx)
+                                        ? 'is-open'
+                                        : ''}"
+                                    aria-expanded={openIdx.has(idx)}
+                                    aria-controls="pub-explainer-{idx}"
+                                    onclick={() => toggle(idx)}
+                                >
+                                    About this work
+                                    <span
+                                        class="zh-pub__more-icon"
+                                        aria-hidden="true"
+                                    ></span>
+                                </button>
+                            {/if}
                             {#if pub.links.paper}
                                 <a
                                     href={pub.links.paper}
@@ -175,13 +200,40 @@
                                     rel="noreferrer noopener">OpenReview ↗</a
                                 >
                             {/if}
-                            {#if Object.keys(pub.links).length === 0 && pub.status === "submitted"}
+                            {#if Object.keys(pub.links).length === 0}
                                 <span class="zh-pub__pending"
-                                    >Preprint coming soon</span
+                                    >Paper coming soon</span
                                 >
                             {/if}
                         </div>
                     </div>
+
+                    {#if pub.explainer}
+                        <div
+                            class="zh-pub__explainer {openIdx.has(idx)
+                                ? 'is-open'
+                                : ''}"
+                            id="pub-explainer-{idx}"
+                            inert={!openIdx.has(idx)}
+                        >
+                            <div class="zh-pub__explainer-inner">
+                                <dl class="zh-pub__explainer-body">
+                                    <div>
+                                        <dt>The problem</dt>
+                                        <dd>{pub.explainer.problem}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Why it matters</dt>
+                                        <dd>{pub.explainer.why}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>What this work does</dt>
+                                        <dd>{pub.explainer.contribution}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+                    {/if}
                 </article>
             {/each}
         </ol>

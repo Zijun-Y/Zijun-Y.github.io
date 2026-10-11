@@ -56,7 +56,7 @@
 
         <a href="/#top" class="zh-mark" aria-label="Home">
             <span class="zh-mark__name">Zijun Yu</span>
-            <span class="zh-mark__role">PhD · McGill</span>
+            <span class="zh-mark__role">PhD student · McGill</span>
         </a>
 
         <nav class="zh-nav" aria-label="Primary">

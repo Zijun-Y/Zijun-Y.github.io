@@ -27,3 +27,7 @@ pnpm-debug.log*
 cv.aux
 cv.log
 cv.out
+
+# local-only files (public repo)
+/cv.pdf
+TODO*.md

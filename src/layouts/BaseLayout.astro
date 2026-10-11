@@ -4,7 +4,7 @@ import { getImage } from "astro:assets";
 import NetworkCanvas from "@/components/NetworkCanvas.svelte";
 import ContactPanel from "@/components/ContactPanel.svelte";
 import portraitSrc from "@/assets/portrait.jpg";
-const { title = "Zijun Yu — PhD, McGill" } = Astro.props;
+const { title = "Zijun Yu — PhD student, McGill" } = Astro.props;
 
 const portrait = await getImage({
     src: portraitSrc,

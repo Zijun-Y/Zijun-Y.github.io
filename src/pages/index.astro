@@ -2,11 +2,10 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SiteHeader from "@/components/SiteHeader.svelte";
 import PublicationsSection from "@/components/PublicationsSection.svelte";
-import { publications as allPubs } from "@/content/publications";
-const publications = allPubs.filter(p => p.featured !== false);
+import { featuredPublications as publications } from "@/content/publications";
 ---
 
-<BaseLayout title="Zijun Yu — PhD, McGill">
+<BaseLayout title="Zijun Yu — PhD student, McGill">
     <SiteHeader client:load />
 
     <main class="zh-main" id="top">
@@ -27,11 +26,21 @@ const publications = allPubs.filter(p => p.featured !== false);
             <p class="zh-hero__bio">
                 I'm a PhD student in Mathematics &amp; Statistics at <em
                     >McGill University</em
-                >, developing distribution-free methods for uncertainty
-                quantification and risk control — currently focused on the
-                reliability, evaluation, and safety of LLMs and autonomous
-                agents. Before academia, four years building production
-                software taught me to keep things robust and elegant.
+                >. I study how AI systems can know when they might be wrong
+                — statistical methods, mostly conformal prediction, whose
+                guarantees hold without assumptions about the model or the
+                data. Lately that means language models: when a reasoning
+                model should abstain, when an agent should be stopped, and how
+                to keep those guarantees affordable.
+            </p>
+
+            <p class="zh-hero__note">
+                Supervised by Masoud Asgharian and Vahid Partovi Nia;
+                previously a research intern at Layer&nbsp;6&nbsp;AI. Before
+                the PhD, I spent four years as a software developer at
+                OneDesk, building a retrieval-augmented LLM chatbot and
+                chasing memory leaks and race conditions in production —
+                habits I now bring to research code that others can rerun.
             </p>
 
             <ul class="zh-tags" aria-label="Research interests">
@@ -57,7 +66,7 @@ const publications = allPubs.filter(p => p.featured !== false);
     <!-- ── Footer ────────────────────────────────────────────── -->
     <footer class="zh-footer zh-shell zh-footer__bottom">
         <span>© 2026 Zijun Yu</span>
-        <span>— last updated <time>August 2026</time></span>
+        <span>— last updated <time>October 2026</time></span>
     </footer>
 </BaseLayout>
 

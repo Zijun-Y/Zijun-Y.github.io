@@ -187,27 +187,23 @@
                             {/if}
                         </button>
                     </li>
+                </ul>
+            </section>
+
+            <section class="zh-cpanel__section">
+                <span class="zh-eyebrow">Academic</span>
+                <ul class="zh-cpanel__links">
                     <li>
                         <a
-                            href="https://github.com/Zijun-Y"
+                            href="https://scholar.google.com/citations?user=EF_Zis4AAAAJ&hl=en"
                             target="_blank"
                             rel="noreferrer noopener"
                         >
-                            <span class="zh-cpanel__link-label">GitHub</span>
-                            <span class="zh-cpanel__link-value"
-                                >Zijun-Y {ARW}</span
+                            <span class="zh-cpanel__link-label"
+                                >Google Scholar</span
                             >
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="https://www.linkedin.com/in/yuzijun"
-                            target="_blank"
-                            rel="noreferrer noopener"
-                        >
-                            <span class="zh-cpanel__link-label">LinkedIn</span>
                             <span class="zh-cpanel__link-value"
-                                >yuzijun {ARW}</span
+                                >Zijun Yu {ARW}</span
                             >
                         </a>
                     </li>
@@ -237,16 +233,38 @@
                         </a>
                     </li>
                     <li>
+                        <a href="/cv.pdf" target="_blank" rel="noopener">
+                            <span class="zh-cpanel__link-label">CV</span>
+                            <span class="zh-cpanel__link-value">PDF {ARW}</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="zh-cpanel__section">
+                <span class="zh-eyebrow">Elsewhere</span>
+                <ul class="zh-cpanel__links">
+                    <li>
                         <a
-                            href="https://scholar.google.com/citations?user=EF_Zis4AAAAJ&hl=en"
+                            href="https://github.com/Zijun-Y"
                             target="_blank"
                             rel="noreferrer noopener"
                         >
-                            <span class="zh-cpanel__link-label"
-                                >Google Scholar</span
-                            >
+                            <span class="zh-cpanel__link-label">GitHub</span>
                             <span class="zh-cpanel__link-value"
-                                >Zijun Yu {ARW}</span
+                                >Zijun-Y {ARW}</span
+                            >
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="https://www.linkedin.com/in/yuzijun"
+                            target="_blank"
+                            rel="noreferrer noopener"
+                        >
+                            <span class="zh-cpanel__link-label">LinkedIn</span>
+                            <span class="zh-cpanel__link-value"
+                                >yuzijun {ARW}</span
                             >
                         </a>
                     </li>

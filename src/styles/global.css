@@ -660,6 +660,14 @@ body::after {
     margin: clamp(28px, 5vh, 48px) 0 0;
     text-wrap: pretty;
 }
+.zh-hero__note {
+    max-width: 62ch;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 20px 0 0;
+    text-wrap: pretty;
+}
 .zh-hero__bio em {
     font-family: var(--display);
     font-style: italic;
@@ -879,7 +887,8 @@ body::after {
         "num head"
         "num title"
         "num authors"
-        "num foot";
+        "num foot"
+        "num more";
     gap: 6px 24px;
     padding: clamp(28px, 5vh, 44px) 0;
     border-bottom: 0.5px solid var(--rule);
@@ -1030,6 +1039,96 @@ body::after {
     font-style: italic;
     font-size: 13px;
     color: var(--muted);
+}
+
+/* Explainer toggle + inline expansion */
+.zh-pub__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: inherit;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: none;
+    border: 0;
+    padding: 4px 0;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+.zh-pub__more:hover,
+.zh-pub__more.is-open {
+    color: var(--accent);
+}
+.zh-pub__more:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 3px;
+}
+.zh-pub__more-icon {
+    position: relative;
+    width: 9px;
+    height: 9px;
+}
+.zh-pub__more-icon::before,
+.zh-pub__more-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 9px;
+    height: 1px;
+    background: currentColor;
+    transition: transform 0.25s ease;
+}
+.zh-pub__more-icon::after {
+    transform: rotate(90deg);
+}
+.zh-pub__more.is-open .zh-pub__more-icon::after {
+    transform: rotate(0deg);
+}
+
+.zh-pub__explainer {
+    grid-area: more;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+        grid-template-rows 0.35s ease,
+        opacity 0.25s ease;
+}
+.zh-pub__explainer.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+.zh-pub__explainer-inner {
+    overflow: hidden;
+    min-height: 0;
+}
+.zh-pub__explainer-body {
+    margin: 20px 0 4px;
+    padding: 4px 0 4px 20px;
+    border-left: 1px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 68ch;
+}
+.zh-pub__explainer-body dt {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+.zh-pub__explainer-body dd {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+    text-wrap: pretty;
 }
 
 /* ── FOOTER ───────────────────────────────────────────────── */
@@ -1271,7 +1370,8 @@ body::after {
             "head"
             "title"
             "authors"
-            "foot";
+            "foot"
+            "more";
         gap: 4px;
     }
     .zh-pub__num {
@@ -1306,7 +1406,8 @@ body::after {
     html {
         scroll-behavior: auto;
     }
-    .zh-cpanel {
+    .zh-cpanel,
+    .zh-pub__explainer {
         transition-duration: 0.01s;
     }
 }

@@ -1,6 +1,15 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SiteHeader from "@/components/SiteHeader.svelte";
+import { publications } from "@/content/publications";
+
+const pubGroups = [
+    { title: "Conference", items: publications.filter((p) => p.status === "accepted") },
+    { title: "Workshop", items: publications.filter((p) => p.status === "workshop") },
+    { title: "Under Review", items: publications.filter((p) => p.status === "submitted" || p.status === "preprint") },
+].filter((g) => g.items.length > 0);
+
+const presentations = publications.filter((p) => p.presentation && p.status !== "submitted");
 ---
 
 <BaseLayout title="CV · Zijun Yu">
@@ -38,8 +47,9 @@ import SiteHeader from "@/components/SiteHeader.svelte";
             PhD student in Mathematics and Statistics developing
             distribution-free methods for uncertainty quantification and risk
             control, with a current focus on the reliability, evaluation, and
-            safety of LLMs and autonomous agents. First-author work at ICML
-            2026 and three manuscripts under review.
+            safety of LLMs and autonomous agents. Co-first-author papers at ICML
+            2026 and NeurIPS 2026, plus a workshop paper on agent safety and
+            one manuscript under review.
         </p>
 
         <!-- Education -->
@@ -165,97 +175,52 @@ import SiteHeader from "@/components/SiteHeader.svelte";
                 <sup>†</sup> Equal contribution.
             </p>
 
-            <h3 class="zh-cv__subhead">Refereed</h3>
-            <ol class="zh-cv__pubs">
-                <li class="zh-cv__pub">
-                    <span class="zh-cv__pub-authors">
-                        Pengqi Liu<sup>†</sup>, <strong>Zijun Yu</strong><sup
-                            >†</sup
-                        >, Mouloud Belbahri, Arthur Charpentier, Masoud
-                        Asgharian, Jesse C. Cresswell.
-                    </span>
-                    <span class="zh-cv__pub-title">
-                        "Beyond Procedure: Substantive Fairness in Conformal
-                        Prediction."
-                    </span>
-                    <span class="zh-cv__pub-venue">
-                        <em
-                            >International Conference on Machine Learning (ICML)</em
-                        >, 2026.
-                        <a
-                            href="https://arxiv.org/abs/2602.16794"
-                            target="_blank"
-                            rel="noopener noreferrer">arXiv ↗</a
-                        >
-                    </span>
-                </li>
-            </ol>
-
-            <h3 class="zh-cv__subhead">Under Review</h3>
-            <ol class="zh-cv__pubs">
-                <li class="zh-cv__pub">
-                    <span class="zh-cv__pub-authors">
-                        <strong>Zijun Yu</strong><sup>†</sup>, Yu Gu<sup
-                            >†</sup
-                        >, Vahid Partovi Nia, Masoud Asgharian.
-                    </span>
-                    <span class="zh-cv__pub-title">
-                        "G-CARB: Graph-Localized Conformal Agent Risk Budgets
-                        for Compositional Harm."
-                    </span>
-                    <span class="zh-cv__pub-venue">
-                        <em>Under review</em>, 2026.
-                    </span>
-                </li>
-                <li class="zh-cv__pub">
-                    <span class="zh-cv__pub-authors">
-                        Yu Gu<sup>†</sup>, <strong>Zijun Yu</strong><sup>†</sup
-                        >, Vahid Partovi Nia, Masoud Asgharian.
-                    </span>
-                    <span class="zh-cv__pub-title">
-                        "Pause and Reflect: Conformal Aggregation for
-                        Chain-of-Thought Reasoning."
-                    </span>
-                    <span class="zh-cv__pub-venue">
-                        <em>Under review</em>, 2026.
-                        <a
-                            href="https://arxiv.org/abs/2605.14098"
-                            target="_blank"
-                            rel="noopener noreferrer">arXiv ↗</a
-                        >
-                    </span>
-                </li>
-                <li class="zh-cv__pub">
-                    <span class="zh-cv__pub-authors">
-                        Yu Gu<sup>†</sup>, <strong>Zijun Yu</strong><sup>†</sup
-                        >, Chi-Kuang Yeh, Xinyu Wang, Ziyang Song.
-                    </span>
-                    <span class="zh-cv__pub-title">
-                        "Severity-Controlled Prediction Sets for Medication
-                        Recommendation."
-                    </span>
-                    <span class="zh-cv__pub-venue">
-                        <em>Under review</em>, 2026.
-                    </span>
-                </li>
-            </ol>
+            {pubGroups.map((g) => (
+                <>
+                    <h3 class="zh-cv__subhead">{g.title}</h3>
+                    <ol class="zh-cv__pubs">
+                        {g.items.map((p) => (
+                            <li class="zh-cv__pub">
+                                <span class="zh-cv__pub-authors">
+                                    {p.authors.map((a, i) => (
+                                        <>
+                                            {i > 0 && ", "}
+                                            {a.self ? <strong>{a.name}</strong> : a.name}
+                                            {a.coFirst && <sup>†</sup>}
+                                        </>
+                                    ))}.
+                                </span>
+                                <span class="zh-cv__pub-title">"{p.title}."</span>
+                                <span class="zh-cv__pub-venue">
+                                    <em>{p.status === "submitted" ? "Under review" : p.venueLong}</em>, {p.year}.
+                                    {p.links.arxiv && (
+                                        <a href={p.links.arxiv} target="_blank" rel="noopener noreferrer">arXiv ↗</a>
+                                    )}
+                                    {p.links.code && (
+                                        <a href={p.links.code} target="_blank" rel="noopener noreferrer">Code ↗</a>
+                                    )}
+                                </span>
+                            </li>
+                        ))}
+                    </ol>
+                </>
+            ))}
         </section>
 
         <!-- Presentations -->
         <section class="zh-cv__section">
             <h2 class="zh-cv__section-title">Presentations</h2>
             <ol class="zh-cv__pubs">
-                <li class="zh-cv__pub">
-                    <span class="zh-cv__pub-title">
-                        "Beyond Procedure: Substantive Fairness in Conformal
-                        Prediction." Poster presentation.
-                    </span>
-                    <span class="zh-cv__pub-venue">
-                        <em
-                            >International Conference on Machine Learning (ICML)</em
-                        >, Seoul, South Korea, 2026.
-                    </span>
-                </li>
+                {presentations.map((p) => (
+                    <li class="zh-cv__pub">
+                        <span class="zh-cv__pub-title">
+                            "{p.title}." {p.status === "workshop" ? "Workshop presentation." : "Poster presentation."}
+                        </span>
+                        <span class="zh-cv__pub-venue">
+                            <em>{p.venueLong}</em>, {p.presentation!.replace(/^Poster,\s*/, "")}, {p.year}.
+                        </span>
+                    </li>
+                ))}
             </ol>
         </section>
 
