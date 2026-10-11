@@ -177,11 +177,13 @@
                                     aria-controls="pub-explainer-{idx}"
                                     onclick={() => toggle(idx)}
                                 >
-                                    About this work
                                     <span
                                         class="zh-pub__more-icon"
                                         aria-hidden="true"
                                     ></span>
+                                    {openIdx.has(idx)
+                                        ? "Hide details"
+                                        : "More details"}
                                 </button>
                             {/if}
                             {#if pub.links.paper}

@@ -84,6 +84,8 @@
     --bg-rgb: 237, 238, 234;
     --ink-rgb: 21, 23, 26;
     --accent-rgb: 59, 111, 176;
+    --on-accent: #ffffff;
+    --on-accent-rgb: 255, 255, 255;
     --muted: #707378;
     --rule: rgba(21, 23, 26, 0.14);
     --paper: #edeeea;
@@ -116,6 +118,8 @@
         --bg-rgb: 21, 17, 14;
         --ink-rgb: 242, 234, 220;
         --accent-rgb: 90, 143, 212;
+        --on-accent: #15110e;
+        --on-accent-rgb: 21, 17, 14;
         --muted: #8f887f;
         --rule: rgba(242, 234, 220, 0.12);
         --paper: #1a1511;
@@ -276,9 +280,10 @@ body::after {
 
 .zh-getintouch {
     appearance: none;
-    border: 0.5px solid var(--rule);
-    background: rgba(var(--bg-rgb), 0.5);
-    color: var(--ink);
+    border: 0.5px solid var(--accent);
+    background: var(--accent);
+    color: var(--on-accent);
+    box-shadow: 0 1px 2px rgba(var(--ink-rgb), 0.12);
     font-family: var(--body);
     font-size: 13px;
     font-weight: 500;
@@ -300,25 +305,30 @@ body::after {
     color: var(--bg);
     border-color: var(--ink);
 }
+.zh-getintouch:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 3px;
+}
 .zh-getintouch__dot {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 2.5px rgba(var(--accent-rgb), 0.2);
+    background: currentColor;
+    box-shadow: 0 0 0 2.5px rgba(var(--on-accent-rgb), 0.25);
     animation: zh-pulse 2.4s ease-in-out infinite;
     flex-shrink: 0;
 }
 .zh-getintouch:hover .zh-getintouch__dot {
-    box-shadow: 0 0 0 2.5px rgba(var(--accent-rgb), 0.35);
+    animation: none;
+    box-shadow: none;
 }
 @keyframes zh-pulse {
     0%,
     100% {
-        box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.18);
+        box-shadow: 0 0 0 2px rgba(var(--on-accent-rgb), 0.3);
     }
     50% {
-        box-shadow: 0 0 0 5px rgba(var(--accent-rgb), 0);
+        box-shadow: 0 0 0 5px rgba(var(--on-accent-rgb), 0);
     }
 }
 
@@ -457,7 +467,7 @@ body::after {
 }
 
 .zh-cpanel__photo {
-    width: 100%;
+    width: min(180px, 50%);
     aspect-ratio: 5 / 6;
     border-radius: 4px;
     overflow: hidden;
@@ -660,13 +670,42 @@ body::after {
     margin: clamp(28px, 5vh, 48px) 0 0;
     text-wrap: pretty;
 }
-.zh-hero__note {
-    max-width: 62ch;
-    font-size: 15px;
-    line-height: 1.6;
+.zh-hero__facts {
+    margin: clamp(28px, 5vh, 44px) 0 0;
+    display: flex;
+    flex-direction: column;
+    max-width: 760px;
+}
+.zh-hero__fact {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-top: 0.5px solid var(--rule);
+}
+.zh-hero__fact:last-child {
+    border-bottom: 0.5px solid var(--rule);
+}
+.zh-hero__fact dt {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--muted);
-    margin: 20px 0 0;
-    text-wrap: pretty;
+}
+.zh-hero__fact dd {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink);
+}
+.zh-hero__fact .zh-tags {
+    margin: 0;
+}
+.zh-hero__fact-sep {
+    color: var(--muted);
+    margin: 0 6px;
 }
 .zh-hero__bio em {
     font-family: var(--display);
@@ -1004,6 +1043,7 @@ body::after {
 }
 .zh-pub__links {
     display: flex;
+    align-items: center;
     gap: 14px;
     flex-wrap: wrap;
 }
@@ -1047,20 +1087,31 @@ body::after {
     align-items: center;
     gap: 8px;
     font: inherit;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 13px;
     color: var(--ink);
-    background: none;
-    border: 0;
-    padding: 4px 0;
+    background: rgba(var(--bg-rgb), 0.6);
+    border: 0.5px solid rgba(var(--ink-rgb), 0.35);
+    border-radius: 999px;
+    padding: 5px 13px 5px 11px;
+    margin-right: 6px;
     cursor: pointer;
-    transition: color 0.15s ease;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
 }
-.zh-pub__more:hover,
+.zh-pub__more:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+}
 .zh-pub__more.is-open {
+    border-color: var(--accent);
     color: var(--accent);
+}
+.zh-pub__more.is-open:hover {
+    background: var(--accent);
+    color: var(--on-accent);
 }
 .zh-pub__more:focus-visible {
     outline: 1px solid var(--accent);
@@ -1277,8 +1328,7 @@ body::after {
 
 /* ── DARK MODE TWEAKS ─────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
-    .zh-tag,
-    .zh-getintouch {
+    .zh-tag {
         background: rgba(var(--ink-rgb), 0.08);
     }
     .zh-pub:hover {
@@ -1362,6 +1412,16 @@ body::after {
     .zh-hero__name {
         flex-direction: column;
         gap: 4px;
+    }
+    .zh-hero__fact {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .zh-hero__fact dd > span:not(.zh-hero__fact-sep) {
+        display: block;
+    }
+    .zh-hero__fact-sep {
+        display: none;
     }
 
     .zh-pub {

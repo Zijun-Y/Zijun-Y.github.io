@@ -124,8 +124,8 @@ export const publications: Publication[] = [
     },
     {
         year: 2026,
-        venue: 'SLM-Agents',
-        venueLong: 'SLM-Agents: 1st Workshop on SLMs for Agentic Systems',
+        venue: 'NeurIPS',
+        venueLong: 'NeurIPS Workshop on SLMs for Agentic Systems (SLM-Agents)',
         presentation: 'Paris, France',
         title: 'G-CARB: Graph-Localized Conformal Agent Risk Budget for Compositional Harm',
         authors: [

@@ -110,21 +110,6 @@
             </button>
         </header>
 
-        <!-- Portrait -->
-        <div class="zh-cpanel__photo">
-            {#if portraitSrc}
-                <img
-                    class="zh-cpanel__photo-img"
-                    src={portraitSrc}
-                    srcset={portraitSrcSet}
-                    sizes="(max-width: 440px) 92vw, 440px"
-                    alt="Portrait of Zijun Yu"
-                    loading="lazy"
-                    decoding="async"
-                />
-            {/if}
-        </div>
-
         <div class="zh-cpanel__body">
             <section class="zh-cpanel__section">
                 <span class="zh-eyebrow">Reach</span>
@@ -270,6 +255,21 @@
                     </li>
                 </ul>
             </section>
+
+            <!-- Portrait -->
+            <div class="zh-cpanel__photo">
+                {#if portraitSrc}
+                    <img
+                        class="zh-cpanel__photo-img"
+                        src={portraitSrc}
+                        srcset={portraitSrcSet}
+                        sizes="180px"
+                        alt="Portrait of Zijun Yu"
+                        loading="lazy"
+                        decoding="async"
+                    />
+                {/if}
+            </div>
 
             <section class="zh-cpanel__section">
                 <span class="zh-eyebrow">Office</span>
