@@ -43,6 +43,18 @@
                     if (!best || top > best.top) best = { top, year };
                 }
             });
+            // At page bottom, the last rows may never reach the trigger line —
+            // fall back to the last row that's on screen
+            const atBottom =
+                window.innerHeight + window.scrollY >=
+                document.documentElement.scrollHeight - 2;
+            if (atBottom && rows?.length) {
+                const visible = [...rows].filter(
+                    (el) => el.getBoundingClientRect().top < window.innerHeight,
+                );
+                const last = visible[visible.length - 1];
+                if (last) best = { top: 0, year: Number(last.dataset.year) };
+            }
             if (best) activeYear = best.year;
 
             if (sectionEl) {
