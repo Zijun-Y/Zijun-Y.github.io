@@ -263,7 +263,7 @@
                         class="zh-cpanel__photo-img"
                         src={portraitSrc}
                         srcset={portraitSrcSet}
-                        sizes="180px"
+                        sizes="(max-width: 440px) 92vw, 440px"
                         alt="Portrait of Zijun Yu"
                         loading="lazy"
                         decoding="async"

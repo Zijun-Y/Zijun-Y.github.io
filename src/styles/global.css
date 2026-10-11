@@ -467,7 +467,7 @@ body::after {
 }
 
 .zh-cpanel__photo {
-    width: min(180px, 50%);
+    width: 100%;
     aspect-ratio: 5 / 6;
     border-radius: 4px;
     overflow: hidden;
@@ -669,43 +669,6 @@ body::after {
     color: var(--ink);
     margin: clamp(28px, 5vh, 48px) 0 0;
     text-wrap: pretty;
-}
-.zh-hero__facts {
-    margin: clamp(28px, 5vh, 44px) 0 0;
-    display: flex;
-    flex-direction: column;
-    max-width: 760px;
-}
-.zh-hero__fact {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 16px;
-    align-items: baseline;
-    padding: 14px 0;
-    border-top: 0.5px solid var(--rule);
-}
-.zh-hero__fact:last-child {
-    border-bottom: 0.5px solid var(--rule);
-}
-.zh-hero__fact dt {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-}
-.zh-hero__fact dd {
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.55;
-    color: var(--ink);
-}
-.zh-hero__fact .zh-tags {
-    margin: 0;
-}
-.zh-hero__fact-sep {
-    color: var(--muted);
-    margin: 0 6px;
 }
 .zh-hero__bio em {
     font-family: var(--display);
@@ -1412,16 +1375,6 @@ body::after {
     .zh-hero__name {
         flex-direction: column;
         gap: 4px;
-    }
-    .zh-hero__fact {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-    .zh-hero__fact dd > span:not(.zh-hero__fact-sep) {
-        display: block;
-    }
-    .zh-hero__fact-sep {
-        display: none;
     }
 
     .zh-pub {

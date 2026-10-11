@@ -8,14 +8,14 @@ const { title = "Zijun Yu — PhD student, McGill" } = Astro.props;
 
 const portrait = await getImage({
     src: portraitSrc,
-    width: 360,
-    height: 432,
+    width: 640,
+    height: 768,
     format: "webp",
 });
 const portrait2x = await getImage({
     src: portraitSrc,
-    width: 720,
-    height: 864,
+    width: 1280,
+    height: 1536,
     format: "webp",
 });
 ---
