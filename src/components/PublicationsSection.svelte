@@ -135,7 +135,7 @@
                             <span class="zh-pub__venue-sep">·</span>
                             <span class="zh-pub__venue-year">{pub.year}</span>
                             <span
-                                class="zh-pub__status {pub.status === 'accepted'
+                                class="zh-pub__status {pub.status === 'accepted' || pub.status === 'workshop'
                                     ? ''
                                     : 'zh-pub__status--quiet'}"
                                 >{statusLabel[pub.status]}</span

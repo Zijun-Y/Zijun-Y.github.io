@@ -43,7 +43,7 @@ export interface Publication {
 
 export const statusLabel: Record<PubStatus, string> = {
     accepted: 'Accepted',
-    workshop: 'Workshop',
+    workshop: 'Accepted', // venue line already names the workshop
     submitted: 'Under review',
     preprint: 'Preprint',
 };
