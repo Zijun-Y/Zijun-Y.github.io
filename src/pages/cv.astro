@@ -112,7 +112,7 @@ const presentations = publications
                             >Institut des sciences mathématiques</span
                         >
                     </span>
-                    <span class="zh-cv__award-year">2026–2027</span>
+                    <span class="zh-cv__award-year">2026 – 2027</span>
                 </li>
                 <li>
                     <span class="zh-cv__award-text">
@@ -132,7 +132,7 @@ const presentations = publications
                             >Institut des sciences mathématiques</span
                         >
                     </span>
-                    <span class="zh-cv__award-year">2025–2026</span>
+                    <span class="zh-cv__award-year">2025 – 2026</span>
                 </li>
                 <li>
                     <span class="zh-cv__award-text">
@@ -141,7 +141,7 @@ const presentations = publications
                         >
                         <span class="zh-cv__award-org">McGill University</span>
                     </span>
-                    <span class="zh-cv__award-year">2025–2029</span>
+                    <span class="zh-cv__award-year">2025 – 2029</span>
                 </li>
                 <li>
                     <span class="zh-cv__award-text">
@@ -519,26 +519,23 @@ const presentations = publications
     }
 
     /* Awards */
+    /* Dense lists: same date | content grid as entries, no row rules */
     .zh-cv__awards {
         list-style: none;
         margin: 0;
         padding: 0;
         display: flex;
         flex-direction: column;
+        gap: 14px;
     }
     .zh-cv__awards li {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        gap: 16px;
-        padding: 11px 0;
-        border-bottom: 0.5px solid var(--rule);
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 24px;
         font-size: 14px;
     }
-    .zh-cv__awards li:first-child {
-        border-top: 0.5px solid var(--rule);
-    }
     .zh-cv__award-text {
+        grid-column: 2;
         display: flex;
         flex-direction: column;
         gap: 2px;
@@ -552,6 +549,9 @@ const presentations = publications
         font-style: italic;
     }
     .zh-cv__award-year {
+        grid-column: 1;
+        grid-row: 1;
+        padding-top: 2px;
         font-family: var(--mono);
         font-size: 12px;
         color: var(--muted);
@@ -645,17 +645,13 @@ const presentations = publications
     .zh-cv__skills {
         display: flex;
         flex-direction: column;
+        gap: 10px;
     }
     .zh-cv__skill-row {
         display: grid;
         grid-template-columns: 120px 1fr;
         gap: 24px;
-        padding: 10px 0;
-        border-bottom: 0.5px solid var(--rule);
         font-size: 14px;
-    }
-    .zh-cv__skill-row:first-child {
-        border-top: 0.5px solid var(--rule);
     }
     .zh-cv__skill-label {
         font-family: var(--mono);
@@ -674,9 +670,14 @@ const presentations = publications
             grid-template-columns: 1fr;
             gap: 6px;
         }
-        .zh-cv__skill-row {
+        .zh-cv__skill-row,
+        .zh-cv__awards li {
             grid-template-columns: 1fr;
             gap: 4px;
+        }
+        .zh-cv__award-text {
+            grid-column: 1;
+            grid-row: 2;
         }
         .zh-cv__top {
             flex-direction: column;
