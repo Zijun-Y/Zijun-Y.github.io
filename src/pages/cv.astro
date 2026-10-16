@@ -229,6 +229,17 @@ const presentations = publications
             </ol>
         </section>
 
+        <!-- Service -->
+        <section class="zh-cv__section">
+            <h2 class="zh-cv__section-title">Service</h2>
+            <ul class="zh-cv__bullets">
+                <li>
+                    <strong>Reviewer</strong>, NeurIPS Workshop on SLMs for
+                    Agentic Systems (SLM-Agents), 2026.
+                </li>
+            </ul>
+        </section>
+
         <!-- Patents and Open-Source Software -->
         <section class="zh-cv__section">
             <h2 class="zh-cv__section-title"
@@ -401,10 +412,9 @@ const presentations = publications
     }
 
     .zh-cv__tagline {
-        font-family: var(--display);
-        font-size: clamp(16px, 1.6vw, 19px);
-        line-height: 1.55;
-        color: var(--muted);
+        font-size: clamp(16px, 1.3vw, 19px);
+        line-height: 1.6;
+        color: var(--ink);
         max-width: 62ch;
         margin: 0 0 clamp(36px, 6vh, 56px);
         text-wrap: pretty;
@@ -569,6 +579,14 @@ const presentations = publications
     }
     .zh-cv__pub:first-child {
         border-top: 0.5px solid var(--rule);
+    }
+    /* Directly under a section title, its rule already does this job */
+    .zh-cv__section-title + .zh-cv__pubs > .zh-cv__pub:first-child {
+        border-top: none;
+        padding-top: 0;
+    }
+    .zh-cv__section-title + .zh-cv__pubs > .zh-cv__pub:first-child::before {
+        top: 2px;
     }
     .zh-cv__pub::before {
         content: counter(pub-counter, decimal-leading-zero);
