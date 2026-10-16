@@ -128,7 +128,7 @@
                         <span
                             class="zh-pub__venue"
                             title={pub.presentation
-                                ? `${pub.venueLong} — ${pub.presentation}`
+                                ? `${pub.venueLong} — ${pub.presentation.format}, ${pub.presentation.location}`
                                 : pub.venueLong}
                         >
                             <span class="zh-pub__venue-name">{pub.venue}</span>
@@ -181,9 +181,7 @@
                                         class="zh-pub__more-icon"
                                         aria-hidden="true"
                                     ></span>
-                                    {openIdx.has(idx)
-                                        ? "Hide details"
-                                        : "More details"}
+                                    About this work
                                 </button>
                             {/if}
                             {#if pub.links.paper}

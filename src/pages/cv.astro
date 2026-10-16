@@ -9,7 +9,12 @@ const pubGroups = [
     { title: "Under Review", items: publications.filter((p) => p.status === "submitted" || p.status === "preprint") },
 ].filter((g) => g.items.length > 0);
 
-const presentations = publications.filter((p) => p.presentation && p.status !== "submitted");
+// Only self-presented entries; future dates are marked upcoming (as of build time)
+const thisMonth = new Date().toISOString().slice(0, 7);
+const presentations = publications
+    .filter((p) => p.presentation?.bySelf)
+    .map((p) => ({ ...p, upcoming: p.presentation!.date > thisMonth }))
+    .sort((a, b) => b.presentation!.date.localeCompare(a.presentation!.date));
 ---
 
 <BaseLayout title="CV · Zijun Yu">
@@ -214,10 +219,10 @@ const presentations = publications.filter((p) => p.presentation && p.status !== 
                 {presentations.map((p) => (
                     <li class="zh-cv__pub">
                         <span class="zh-cv__pub-title">
-                            "{p.title}." {p.status === "workshop" ? "Workshop presentation." : "Poster presentation."}
+                            "{p.title}." {p.presentation!.format} presentation{p.upcoming && " (upcoming)"}.
                         </span>
                         <span class="zh-cv__pub-venue">
-                            <em>{p.venueLong}</em>, {p.presentation!.replace(/^Poster,\s*/, "")}, {p.year}.
+                            <em>{p.venueLong}</em>, {p.presentation!.location}, {p.year}.
                         </span>
                     </li>
                 ))}

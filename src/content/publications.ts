@@ -15,11 +15,18 @@ export interface Explainer {
     contribution: string;
 }
 
+export interface Presentation {
+    format: 'Poster' | 'Workshop';
+    location: string; // e.g. "Sydney, Australia"
+    date: string; // YYYY-MM, used to mark upcoming entries
+    bySelf: boolean; // only self-presented entries are listed on the CV
+}
+
 export interface Publication {
     year: number;
     venue: string; // short label, e.g. "NeurIPS"
     venueLong: string; // full name, used in tooltips and the CV
-    presentation?: string; // e.g. "Poster, Atlanta"
+    presentation?: Presentation;
     title: string;
     authors: Author[];
     tags: string[];
@@ -46,7 +53,7 @@ export const publications: Publication[] = [
         year: 2026,
         venue: 'NeurIPS',
         venueLong: 'Conference on Neural Information Processing Systems (NeurIPS)',
-        presentation: 'Poster, Sydney, Australia',
+        presentation: { format: 'Poster', location: 'Sydney, Australia', date: '2026-12', bySelf: false },
         title: 'Pause and Reflect: Conformal Aggregation for Chain-of-Thought Reasoning',
         authors: [
             { name: 'Yu Gu', coFirst: true },
@@ -59,11 +66,11 @@ export const publications: Publication[] = [
         featured: 1,
         explainer: {
             problem:
-                'Language models that reason step by step are often sampled several times, with the most common final answer taken as the response. That majority vote always produces an answer, but it gives no reliable signal for when that answer is likely to be wrong.',
+                'A common way to get better answers from a reasoning language model is to ask the same question several times and go with the most popular answer. That vote always produces an answer, but agreement alone comes with no guarantee about how often the chosen answer is wrong.',
             why:
-                'In settings like tutoring, analysis or decision support, a confident wrong answer is often worse than an honest “I’m not sure.” Knowing when to abstain matters as much as accuracy.',
+                'In tutoring, analysis or decision support, a confident wrong answer is often worse than an honest “I’m not sure.” A system that knows when to hold back is easier to trust.',
             contribution:
-                'We replace majority voting with a weighted aggregation of scores across reasoning paths, then use conformal risk control to set an abstention threshold with a finite-sample guarantee on how often the system answers confidently and wrongly. It runs at inference time, with no retraining. On GSM8K it reaches 90.1% accuracy on the questions it answers while abstaining on fewer than 5%, compared with 82% for majority voting.',
+                'We give the model a principled way to hold back. Rather than a simple vote, it weighs the evidence across all of its attempts and answers only when that evidence is strong enough, with a statistical guarantee on how often it answers confidently and wrongly. It sits on top of an existing model with no retraining, and needs to abstain on only a small share of questions for the answers it does give to become noticeably more reliable.',
         },
         links: { arxiv: 'https://arxiv.org/abs/2605.14098' },
     },
@@ -71,7 +78,7 @@ export const publications: Publication[] = [
         year: 2026,
         venue: 'NeurIPS',
         venueLong: 'Conference on Neural Information Processing Systems (NeurIPS)',
-        presentation: 'Poster, Atlanta, USA',
+        presentation: { format: 'Poster', location: 'Atlanta, USA', date: '2026-12', bySelf: false },
         title: 'Severity-Controlled Prediction Sets for Medication Recommendation',
         authors: [
             { name: 'Yu Gu', coFirst: true },
@@ -84,11 +91,11 @@ export const publications: Publication[] = [
         status: 'accepted',
         explainer: {
             problem:
-                'Medication recommendation predicts a set of drugs for each patient. Existing ways of evaluating and calibrating these prediction sets count only exact matches, so every missed medication is treated as equally bad.',
+                'Medication recommendation systems suggest a set of drugs for each patient. The usual ways of judging and calibrating those suggestions count only exact matches, so every missed drug counts as equally wrong.',
             why:
-                'Mistakes are not all alike. Missing a drug but recommending a therapeutically close one is far less serious than matching it only with distant drugs, and a guarantee that ignores this difference says little about clinical risk.',
+                'Not all misses are alike. By the standard classification of drugs, suggesting a closely related drug in place of the right one is a nearer miss than suggesting one from an unrelated class — and a reliability guarantee should be able to tell the two apart.',
             contribution:
-                'We introduce Conformal Severity Control (CSC), a post-hoc framework that uses the Anatomical Therapeutic Chemical (ATC) drug hierarchy to measure how severe each mismatch is, and calibrates prediction sets to control that severity per patient without retraining the model. It can control either average severity or the upper tail of the most severe mismatches. On MIMIC-IV, CSC tracks user-specified severity tolerances and shifts prediction sets away from distant mismatches toward exact or close matches.',
+                'We measure how far each patient’s misses fall within that drug classification, and adjust the suggested sets so that this distance stays within a tolerance the user chooses, with a statistical guarantee over the patient population and no retraining of the underlying model. The suggestions shift toward exact or closely related drugs and away from distant ones.',
         },
         links: {},
     },
@@ -96,7 +103,7 @@ export const publications: Publication[] = [
         year: 2026,
         venue: 'ICML',
         venueLong: 'International Conference on Machine Learning (ICML)',
-        presentation: 'Poster, Seoul, South Korea',
+        presentation: { format: 'Poster', location: 'Seoul, South Korea', date: '2026-07', bySelf: true },
         title: 'Beyond Procedure: Substantive Fairness in Conformal Prediction',
         authors: [
             { name: 'Pengqi Liu', coFirst: true },
@@ -111,11 +118,11 @@ export const publications: Publication[] = [
         featured: 2,
         explainer: {
             problem:
-                'Conformal prediction turns a model’s output into a set of plausible answers that contains the truth with a guaranteed probability. Work on fairness in conformal prediction has mostly asked whether that guarantee holds equally across groups — a property of the procedure.',
+                'Conformal prediction turns a model’s guess into a short list of plausible answers that contains the right one with a guaranteed probability. Fairness work in this area has mostly asked whether that guarantee holds equally for every group.',
             why:
-                'Prediction sets are increasingly handed to people, or to language models, who make the final decision. Equal guarantees on paper do not necessarily translate into equal outcomes for the people affected.',
+                'These lists are increasingly handed to people, or to language models, who make the final call. A guarantee that is equal on paper does not mean the decisions that follow are equally good for everyone.',
             contribution:
-                'We study fairness across the whole decision pipeline rather than the conformal step alone. We derive an upper bound on disparities in prediction-set size and introduce an LLM-in-the-loop evaluator to measure the fairness of downstream decisions. Empirically, equalizing set sizes tracks fairer outcomes more closely than equalizing coverage, and label-clustered conformal prediction often strikes a good balance between usefulness and fairness.',
+                'We look past the list to the decisions made with it, using language models as stand-in decision makers to measure how fair the outcomes actually are, and back this with theory. The practical finding: keeping the lists similar in size across groups does more for fair outcomes than equalizing the guarantee itself.',
         },
         links: {
             arxiv: 'https://arxiv.org/abs/2602.16794',
@@ -124,9 +131,9 @@ export const publications: Publication[] = [
     },
     {
         year: 2026,
-        venue: 'NeurIPS',
+        venue: 'SLM-Agents @ NeurIPS',
         venueLong: 'NeurIPS Workshop on SLMs for Agentic Systems (SLM-Agents)',
-        presentation: 'Paris, France',
+        presentation: { format: 'Workshop', location: 'Paris, France', date: '2026-12', bySelf: true },
         title: 'G-CARB: Graph-Localized Conformal Agent Risk Budget for Compositional Harm',
         authors: [
             { name: 'Zijun Yu', coFirst: true, self: true },
@@ -139,18 +146,18 @@ export const publications: Publication[] = [
         featured: 3,
         explainer: {
             problem:
-                'AI agents act over many steps, and harm can come from a combination of steps that each look harmless — reading private data, then sending a message outside. Deciding when to stop an agent means judging its history, but scoring the entire history is costly and dilutes the signal.',
+                'AI agents act in many steps, and harm can come from steps that each look harmless — reading a private file, then sending a message outside. Catching this means looking back over what the agent has done, but reviewing its whole history every time is costly and buries the signal.',
             why:
-                'Small language model agents are increasingly run autonomously. Stopping too late lets harm through; stopping too early throws away useful work.',
+                'Small language-model agents increasingly run on their own. Stopping too late lets harm through; stopping too early throws away useful work.',
             contribution:
-                'We propose CARB, a conformal risk budget that decides when to stop an agent based on a ledger of harm incurred before stopping. G-CARB scores only the private-source evidence connected to an outgoing action. On AgentDojo replays with two 14B models, it roughly halves the scorer’s input at intermediate budgets while improving task completion over scoring the full history. Random context of the same size gives similar aggregate gains; controlled examples show where keeping the relevant dependency avoids stopping benign work.',
+                'We give the agent a risk budget: a rule for when to stop it, with a statistical guarantee on how much harm gets through first. The safety check then looks only at the private information an outgoing action could have drawn on, rather than the entire history, so it reads far less while letting more legitimate work finish. One honest caveat: an equally sized random slice of history helps about as much on average — following the connections pays off in specific cases, where it keeps harmless work from being stopped.',
         },
         links: { arxiv: 'https://arxiv.org/abs/2610.05563' },
     },
     {
         year: 2026,
-        venue: 'In submission',
-        venueLong: 'Submitted — under review',
+        venue: 'arXiv',
+        venueLong: 'arXiv preprint — under review',
         title: 'Conformal Prediction under Partial Verification',
         authors: [
             { name: 'Zijun Yu', coFirst: true, self: true },
@@ -162,11 +169,11 @@ export const publications: Publication[] = [
         status: 'submitted',
         explainer: {
             problem:
-                'Conformal prediction needs a set of labelled calibration examples. For language-model tasks, a “label” often means verifying an output — checking a retrieved document, grading a math solution, running a configuration — and that verification is expensive.',
+                'Conformal prediction needs a batch of examples whose answers have been checked. For language-model tasks, checking is real work — reading a retrieved document, grading a math solution, running a configuration — and it adds up quickly.',
             why:
-                'Verification cost limits where statistical guarantees can be used in practice. If every calibration example must be fully checked, guarantees become a luxury.',
+                'When checking is expensive, statistical guarantees become a luxury, used only where someone can afford to verify everything.',
             contribution:
-                'We show that full verification is often unnecessary. We define calibration certificates — the minimal verified information needed to fix the conformal threshold — and a procedure that coordinates verification across calibration examples. It returns exactly the same prediction sets as complete verification, so the guarantee is unchanged, while cutting verification cost by 15–82% compared with verifying examples one at a time across retrieval, math-solution and configuration-evaluation tasks.',
+                'We show that full checking is often unnecessary: partial checks frequently already settle everything the guarantee depends on. The method works out when enough has been verified and which examples to check next, returning exactly the same result as checking everything — so the guarantee is unchanged — at a lower, often much lower, cost.',
         },
         links: { arxiv: 'https://arxiv.org/abs/2610.10829' },
     },
